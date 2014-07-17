@@ -1,5 +1,4 @@
 
-
 var currentDirection = "right";
 
 $(document).ready(function(){
@@ -10,25 +9,18 @@ $(document).ready(function(){
         //$('#board').html('This key is pressed: ' + key.which);    
 
         switch(key.which) {
-            //LEFT
             case 37: 
-                $('#snake').animate({left: '-=10px'}, 50);
+                currentDirection = "left";
                 break;
-            
-            //UP
             case 38:
-                $('#snake').animate({top: '-=10px'}, 50);
+                currentDirection = "up";
                 break;                
-            
-            //RIGHT
             case 39: 
-                $('#snake').animate({left: '+=10px'}, 50);
+                currentDirection = "right";
                 break;
-            //DOWN
             case 40:
-                $('#snake').animate({top: '+=10px'}, 50);
+                currentDirection = "down";
                 break;
-        
         }
     });    
     
@@ -36,7 +28,22 @@ $(document).ready(function(){
 
 function moveSnake() {
     var myInterval = setInterval(function(){
-        $('#snake').animate({left: '+=10px'}, 50);
+        switch(currentDirection) {
+            case "left":
+                $('#snake').animate({left: '-=10px'}, 50);
+                break;
+            case "up":
+                $('#snake').animate({top: '-=10px'}, 50);
+                break;
+            case "right":
+                $('#snake').animate({left: '+=10px'}, 50);
+                break;
+            case "down":
+                $('#snake').animate({top: '+=10px'}, 50);
+                break;
+        }
+        
+        //$('#snake').animate({left: '+=10px'}, 50);
     }, 500);
 }
 
