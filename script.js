@@ -1,4 +1,5 @@
-
+/*jslint browser: true, devel: true, plusplus: true, todo: true*/
+/* global $:false, jQuery:false */
 
 var currentDirection = "right";
 
