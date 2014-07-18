@@ -2,15 +2,37 @@
 /* global $:false, jQuery:false */
 
 var currentDirection = "right";
+var snakeSpeed = 50;
+var intervalSpeed = 150;
+var myInterval;
+var currentInterval;
 
 $(document).ready(function(){
     
-    moveSnake();
+    currentInterval = setInterval(function(){
+        $('#snake').animate({left: '+=5px'}, snakeSpeed, 'linear');
+    }, intervalSpeed);
+    
+    //autoMoveSnake();
     
     $(document).keydown(function(key){
-        //$('#board').html('This key is pressed: ' + key.which);    
-
+        $('snake').clearQueue();
         switch(key.which) {
+            case 37: 
+                moveSnake("left");
+                break;
+            case 38:
+                moveSnake("up");
+                break;                
+            case 39: 
+                moveSnake("right");
+                break;
+            case 40:
+                moveSnake("down");
+                break;
+        }    
+        
+        /*switch(key.which) {
             case 37: 
                 currentDirection = "left";
                 break;
@@ -23,29 +45,62 @@ $(document).ready(function(){
             case 40:
                 currentDirection = "down";
                 break;
-        }
+        }*/
     });    
     
 });
 
-function moveSnake() {
-    var myInterval = setInterval(function(){
+//KANSKE BEHÖVER ÄNDRA INTERVALET SÅ ATT DET ALLTID SÄTTS PÅ NYTT NÄR MAN KLICKAR DVS 4 OLIKA INTERVAL!
+
+function autoMoveSnake() {
+    myInterval = setInterval(function(){
         switch(currentDirection) {
             case "left":
-                $('#snake').animate({left: '-=10px'}, 50);
+                $('#snake').animate({left: '-=5px'}, snakeSpeed, 'linear');
                 break;
             case "up":
-                $('#snake').animate({top: '-=10px'}, 50);
+                $('#snake').animate({top: '-=5px'}, snakeSpeed, 'linear');
                 break;
             case "right":
-                $('#snake').animate({left: '+=10px'}, 50);
+                $('#snake').animate({left: '+=5px'}, snakeSpeed, 'linear');
                 break;
             case "down":
-                $('#snake').animate({top: '+=10px'}, 50);
+                $('#snake').animate({top: '+=5px'}, snakeSpeed, 'linear');
                 break;
         }
-        
-        //$('#snake').animate({left: '+=10px'}, 50);
-    }, 500);
+    }, 400);
 }
 
+function changeDirectionForInterval(direction) {
+    clearInterval(currentInterval);
+}
+
+function moveSnake(direction){
+    clearInterval(currentInterval);
+    $('snake').stop().clearQueue();
+    switch(direction) {
+        case "left":
+            currentInterval = setInterval(function(){
+                $('#snake').animate({left: '-=5px'}, snakeSpeed, 'linear');
+            }, intervalSpeed);
+            //currentDirection = "left";
+            break;
+        case "up":
+            currentInterval = setInterval(function(){
+                $('#snake').animate({top: '-=5px'}, snakeSpeed, 'linear');
+            }, intervalSpeed);
+                //currentDirection = "up";
+            break;
+        case "right":
+            currentInterval = setInterval(function(){
+                $('#snake').animate({left: '+=5px'}, snakeSpeed, 'linear');
+            }, intervalSpeed);
+                //currentDirection = "right";
+            break;
+        case "down":
+            currentInterval = setInterval(function(){
+                $('#snake').animate({top: '+=5px'}, snakeSpeed, 'linear');
+            }, intervalSpeed);
+            break;
+    } 
+}
