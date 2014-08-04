@@ -15,6 +15,7 @@
     var pixelsToMove = 5;
     var snakeSpeed = 50;
     var paused = true;
+    var snakeLength = 4;
 
     $(document).ready(function(){
 
@@ -55,7 +56,6 @@
                         clearInterval(myInterval);
                         paused = true;
                     }
-                    
                     break;
             }
         });
@@ -69,7 +69,6 @@
 
         myInterval = setInterval(function(){
             drawSnakeHead(direction);
-
         }, 50);
         
         paused = false;
