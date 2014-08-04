@@ -12,10 +12,18 @@ p {
     margin: 20px;
 }
 
-#snake {
+/*#snake {
     height: 10px;
     width: 10px;
     display: block;
     background-color: #c34279;
     position: relative;
+}*/
+
+.snakeHead {
+    height: 10px;
+    width: 10px;
+    display: block;
+    background-color: #c34279;
+    position: absolute;
 }
