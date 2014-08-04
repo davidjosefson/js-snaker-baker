@@ -14,6 +14,7 @@
     var myInterval;
     var pixelsToMove = 5;
     var snakeSpeed = 50;
+    var paused = true;
 
     $(document).ready(function(){
 
@@ -47,7 +48,14 @@
                     break;
                 //SPACE
                 case 32:
-                    clearInterval(myInterval);
+                    if(paused){
+                        moveSnake(currentDirection);
+                    }
+                    else {
+                        clearInterval(myInterval);
+                        paused = true;
+                    }
+                    
                     break;
             }
         });
@@ -63,6 +71,8 @@
             drawSnakeHead(direction);
 
         }, 50);
+        
+        paused = false;
 
     }
 
