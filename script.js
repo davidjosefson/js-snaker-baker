@@ -1,18 +1,19 @@
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
 /*global $:false */
 
-//TODO: När man ändrar direction så ska den ta bort den nya intervallen och skapa en ny
-//TODO: Om man klickar på en knapp i "samma" riktning ska den ignorera detta (så att man inte kan speeda upp snaken)
+//TODO: [x]När man ändrar direction så ska den ta bort den nya intervallen och skapa en ny
+//TODO: [x]Om man klickar på en knapp i "samma" riktning ska den ignorera detta (så att man inte kan speeda upp snaken)
 
 var currentDirection = "right";
 var startXpos = 50;
 var startYpos = 50;
 var currentXpos = 50;
 var currentYpos = 50;
+var myInterval;
 
 $(document).ready(function(){
     
-    moveSnake();
+    moveSnake("right");
     
     $(document).keydown(function(key){
         //$('#board').html('This key is pressed: ' + key.which);    
@@ -20,22 +21,25 @@ $(document).ready(function(){
         switch(key.which) {
             //LEFT
             case 37: 
-                currentDirection = "left";
+                if((currentDirection != "right") && (currentDirection != "left"))
+                    moveSnake("left");
                 break;
             
             //UP
             case 38:
-                currentDirection = "up";
+                if((currentDirection != "down") && (currentDirection != "up"))
+                    moveSnake("up");
                 break;                
             
             //RIGHT
             case 39: 
-                currentDirection = "right";
+                if((currentDirection != "right") && (currentDirection != "left"))
+                    moveSnake("right");
                 break;
             //DOWN
             case 40:
-                //$('#snake').animate({top: '+=10px'}, 50);
-                currentDirection = "down";
+                if((currentDirection != "down") && (currentDirection != "up"))
+                    moveSnake("down");
                 break;
         
         }
@@ -43,8 +47,12 @@ $(document).ready(function(){
     
 });
 
-function moveSnake() {
-    var myInterval = setInterval(function(){
+function moveSnake(direction) {
+    clearInterval(myInterval);
+    
+    currentDirection = direction;
+    
+    myInterval = setInterval(function(){
         drawSnakeHead(currentXpos,currentYpos);
         
         switch(currentDirection){
@@ -62,7 +70,7 @@ function moveSnake() {
                 break;
         }
 
-    }, 500);
+    }, 200);
     
 }
 
