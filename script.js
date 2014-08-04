@@ -45,7 +45,10 @@ $(document).ready(function(){
                 if((currentDirection != "down") && (currentDirection != "up"))
                     moveSnake("down");
                 break;
-        
+            //SPACE
+            case 32:
+                clearInterval(myInterval);
+                break;
         }
     });
     
