@@ -1,4 +1,4 @@
-//TODO: Make the snake tail disappear
+//TODO: Make the snake tail disappear -> ANVÄND DET FAKTUM ATT DET ALLTID ÄR DEN "FÖRSTA" DIVEN I HTMLen SOM ÄR SIST PÅ SNAKEN. MAN KAN ENKELT TA BORT DEN FÖRSTA CHILD-DIVEN MAN HITTAR!
 //TODO: Create some kind of Game over view
 //TODO: Game over when hitting tail
 //TODO: Game over when hitting wall
@@ -13,10 +13,14 @@
     var currentYpos = 50;
     var myInterval;
     var pixelsToMove = 5;
-    var snakeSpeed = 50;
+    var snakeSpeed = 2000;
     var paused = true;
-    var snakeLength = 4;
-
+    var snakeLength = 0;
+    var snakeLengthLimit = 3;
+    var snakeBodyCounter = 0;
+    var removeTailHasRun = false;
+    var flipper = true;
+    
     $(document).ready(function(){
 
         moveSnake("right");
@@ -68,14 +72,20 @@
         currentDirection = direction;
 
         myInterval = setInterval(function(){
+            if(snakeLength == snakeLengthLimit)
+                removeSnakeTail();
+            
             drawSnakeHead(direction);
-        }, 50);
+            
+
+            
+        }, snakeSpeed);
         
         paused = false;
 
     }
 
-    function drawSnakeHead(direction) {
+    function drawSnakeHead(direction) {    
         switch(direction){
             case "left":
                 currentXpos -= pixelsToMove;
@@ -90,9 +100,33 @@
                 currentYpos += pixelsToMove;
                 break;
         }
-
-        $('#board').append('<div class="snakeHead" style="left: ' + currentXpos + 'px; top:' + currentYpos + 'px;"></div>');
-        //$('#board .snakeHead').css('top', yPos).css('left', xPos);
+        //if(snakeLength == snakeLengthLimit)
+        //    var classCounter = snakeBodyCounter;
+        //else
+        if(!removeTailHasRun)
+            var classCounter = snakeBodyCounter + 1;
+        else
+            var classCounter = snakeBodyCounter;
+        
+        $('#board').append('<div class="snakeHead body' + classCounter + '" style="left: ' + currentXpos + 'px; top:' + currentYpos + 'px;"></div>');
+        
+        snakeLength++;
+        snakeBodyCounter++;
+        if((snakeBodyCounter == snakeLengthLimit) && (flipper)) {
+            snakeBodyCounter = 1;
+            /*if(flipper)
+                flipper = false;
+            else
+                flipper = true;*/
+        }
+        
     }
-})();
+    
+    function removeSnakeTail() {
+        var classToRemove = ".body" + snakeBodyCounter;
+        $(classToRemove).remove();
+        snakeLength--;
+        removeTailHasRun = true;
+    }
+})();   
 
