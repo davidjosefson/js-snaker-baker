@@ -20,6 +20,7 @@
     var snakeBodyCounter = 0;
     var removeTailHasRun = false;
     var flipper = true;
+    var snakeBodyArray = [];
     
     $(document).ready(function(){
 
@@ -128,5 +129,20 @@
         snakeLength--;
         removeTailHasRun = true;
     }
+
+    function addHeadToArray(xPos, yPos) {
+        var bodyPart = {
+            xPos: this.xPos, 
+            yPos: this.yPos
+        };
+        
+        snakeBodyArray.unshift(bodyPart);
+    }
+    
+    function removeTailFromArray() {
+        snakeBodyArray.pop();
+    }
+    
+    
 })();   
 
