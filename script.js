@@ -15,10 +15,7 @@
     var pixelsToMove = 5;
     var snakeSpeed = 500;
     var paused = true;
-    var snakeLengthLimit = 3;
-    //var snakeBodyCounter = 0;
-    //var removeTailHasRun = false;
-    //var flipper = true;
+    var snakeLengthLimit = 4;
     var snakeBodyArray = [];
     
     $(document).ready(function(){
@@ -101,47 +98,39 @@
                 currentYpos += pixelsToMove;
                 break;
         }
-        //if(snakeLength == snakeLengthLimit)
-        //    var classCounter = snakeBodyCounter;
-        //else
-        /*if(!removeTailHasRun)
-            var classCounter = snakeBodyCounter + 1;
-        else
-            var classCounter = snakeBodyCounter;*/
         
+        //Draws the head on the board
         $('#board').append('<div class="snakeHead" style="left: ' + currentXpos + 'px; top:' + currentYpos + 'px;"></div>');
         
+        //Adds coordinates to the array
         addHeadToArray(currentXpos, currentYpos);
-        
-       /* snakeLength++;
-        snakeBodyCounter++;
-        if((snakeBodyCounter == snakeLengthLimit)) {
-            snakeBodyCounter = 1;
-        }*/
         
     }
     
     function removeSnakeTail() {
-        //var classToRemove = ".body" + snakeBodyCounter;
+        //Remove from HTML (the visual snake)
         $('.snakeHead').first().remove();
-        //snakeLength--;
-        //removeTailHasRun = true;
+        
+        //Remove from the coordinates-array
         removeTailFromArray();
     }
-
+    
+    //Function to add a new head to the array
     function addHeadToArray(xPos, yPos) {
+        //Create a new body part with coordinates
         var bodyPart = {
             xPos: xPos, 
             yPos: yPos
         };
         
+        //Adds the body part object to the beginning of the array
         snakeBodyArray.unshift(bodyPart);
     }
     
+    //Function to remove the last body part from the array
     function removeTailFromArray() {
         snakeBodyArray.pop();
     }
-    
     
 })();   
 
