@@ -1,4 +1,4 @@
-//TODO: Make the snake tail disappear -> ANVÄND DET FAKTUM ATT DET ALLTID ÄR DEN "FÖRSTA" DIVEN I HTMLen SOM ÄR SIST PÅ SNAKEN. MAN KAN ENKELT TA BORT DEN FÖRSTA CHILD-DIVEN MAN HITTAR!
+//TODO: [x]Make the snake tail disappear -> ANVÄND DET FAKTUM ATT DET ALLTID ÄR DEN "FÖRSTA" DIVEN I HTMLen SOM ÄR SIST PÅ SNAKEN. MAN KAN ENKELT TA BORT DEN FÖRSTA CHILD-DIVEN MAN HITTAR!
 //TODO: Create some kind of Game over view
 //TODO: Game over when hitting tail
 //TODO: Game over when hitting wall
@@ -26,25 +26,29 @@
             switch(key.which) {
                 //LEFT
                 case 37: 
-                    if((currentDirection != "right") && (currentDirection != "left"))
+                    if((currentDirection != "right") && (currentDirection != "left")){
                         moveSnake("left");
+                    }
                     break;
 
                 //UP
                 case 38:
-                    if((currentDirection != "down") && (currentDirection != "up"))
+                    if((currentDirection != "down") && (currentDirection != "up")){
                         moveSnake("up");
+                    }
                     break;                
 
                 //RIGHT
                 case 39: 
-                    if((currentDirection != "right") && (currentDirection != "left"))
+                    if((currentDirection != "right") && (currentDirection != "left")){
                         moveSnake("right");
+                    }
                     break;
                 //DOWN
                 case 40:
-                    if((currentDirection != "down") && (currentDirection != "up"))
+                    if((currentDirection != "down") && (currentDirection != "up")) {
                         moveSnake("down");
+                    }
                     break;
                 //SPACE
                 case 32:
@@ -76,8 +80,9 @@
             drawSnakeHead(direction);
             
             snakeLength = snakeBodyArray.length;
-            if(snakeLength >= snakeLengthLimit)
+            if(snakeLength >= snakeLengthLimit) {
                 removeSnakeTail();
+            }
         }, snakeSpeed);
         
         paused = false;
