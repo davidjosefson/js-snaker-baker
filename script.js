@@ -36,6 +36,7 @@
     
     function startGame(){
         gameStarted = true;
+        paused = false;
         currentDirection = "right";
         currentXpos = 50;
         currentYpos = 50;
@@ -94,7 +95,7 @@
     }
     
     function gameOver(){
-        pauseSnake();
+        //pauseSnake();
         gameStarted = false;
         resetGame();
         displayGameOverMessage();
@@ -110,6 +111,7 @@
     function resetGame() {
         $('.snakeHead').remove();
         snakeBodyArray = [];
+        clearInterval(myInterval);
     }
     
     function displayGameOverMessage(){
