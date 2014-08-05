@@ -22,18 +22,20 @@
     $(document).ready(function(){
         $(document).keydown(function(){
             if(!gameStarted){
-                hideStartGameText();
+                hideStartGameMessage();
+                hideGameOverMessage();
                 startGame();
                 gameStarted = true;
             }
         });
     });
 
-    function hideStartGameText() {
-        $('#startGameText').css('display', 'none');
+    function hideStartGameMessage() {
+        $('#startGameMessage').css('display', 'none');
     }
     
     function startGame(){
+        gameStarted = true;
         currentDirection = "right";
         currentXpos = 50;
         currentYpos = 50;
@@ -41,56 +43,90 @@
         moveSnake("right");
         
         $(document).keydown(function(key){
-            switch(key.which) {
-                //LEFT
-                case 37: 
-                    if((currentDirection != "right") && (currentDirection != "left")){
-                        moveSnake("left");
-                    }
-                    break;
+            if(gameStarted){
+                switch(key.which) {
+                    //LEFT
+                    case 37: 
+                        if((currentDirection != "right") && (currentDirection != "left")){
+                            moveSnake("left");
+                        }
+                        break;
 
-                //UP
-                case 38:
-                    if((currentDirection != "down") && (currentDirection != "up")){
-                        moveSnake("up");
-                    }
-                    break;                
+                    //UP
+                    case 38:
+                        if((currentDirection != "down") && (currentDirection != "up")){
+                            moveSnake("up");
+                        }
+                        break;                
 
-                //RIGHT
-                case 39: 
-                    if((currentDirection != "right") && (currentDirection != "left")){
-                        moveSnake("right");
-                    }
-                    break;
-                //DOWN
-                case 40:
-                    if((currentDirection != "down") && (currentDirection != "up")) {
-                        moveSnake("down");
-                    }
-                    break;
-                //SPACE
-                case 32:
-                    if(paused){
-                        moveSnake(currentDirection);
-                    }
-                    else {
-                        clearInterval(myInterval);
-                        paused = true;
-                    }
-                    break;
-                //A
-                case 65:
-                    snakeLengthLimit++;
-                    break;
-                //X
-                /*case 88:
-                    gameOver();
-                    break;*/
+                    //RIGHT
+                    case 39: 
+                        if((currentDirection != "right") && (currentDirection != "left")){
+                            moveSnake("right");
+                        }
+                        break;
+                    //DOWN
+                    case 40:
+                        if((currentDirection != "down") && (currentDirection != "up")) {
+                            moveSnake("down");
+                        }
+                        break;
+                    //SPACE
+                    case 32:
+                        if(paused){
+                            moveSnake(currentDirection);
+                        }
+                        else {
+                            pauseSnake();
+                        }
+                        break;
+                    //A
+                    case 65:
+                        snakeLengthLimit++;
+                        break;
+                    //X
+                    case 88:
+                        gameOver();
+                        break;
+                }
             }
         });
     }
     
+    function gameOver(){
+        pauseSnake();
+        gameStarted = false;
+        resetGame();
+        displayGameOverMessage();
+        
+        /*$(document).keydown(function(){
+            if(!gameStarted){
+                hideGameOverMessage();
+                startGame();
+            }
+        });*/
+    }
+    
+    function resetGame() {
+        $('.snakeHead').remove();
+        snakeBodyArray = [];
+    }
+    
+    function displayGameOverMessage(){
+        $('#gameOverMessage').css('display','block');
+    }
+    
+    function hideGameOverMessage(){
+        $('#gameOverMessage').css('display','none');
+    }
+    
+    function pauseSnake(){
+        clearInterval(myInterval);
+        paused = true;  
+    }
+    
     function moveSnake(direction) {
+        paused = false;
         var snakeLength;
         clearInterval(myInterval);
         currentDirection = direction;
