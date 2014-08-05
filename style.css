@@ -27,3 +27,10 @@ p {
     background-color: #c34279;
     position: absolute;
 }
+
+#startGameText {
+    height: 25px;
+    width: 200px;
+    margin: auto;
+    background-color: blue;
+}

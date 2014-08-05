@@ -17,11 +17,30 @@
     var paused = true;
     var snakeLengthLimit = 7;
     var snakeBodyArray = [];
+    var gameStarted = false;
     
     $(document).ready(function(){
+        
+        $(document).keydown(function(){
+            if(!gameStarted){
+                hideStartGameText();
+                startGame();
+                gameStarted = true;
+            }
+        });
+        
+        //startGame();
+        
+        //moveSnake("right");
+    });
 
+    function hideStartGameText() {
+        $('#startGameText').css('display', 'none');
+    }
+    
+    function startGame(){
         moveSnake("right");
-
+        
         $(document).keydown(function(key){
             switch(key.which) {
                 //LEFT
@@ -63,11 +82,15 @@
                 //A
                 case 65:
                     snakeLengthLimit++;
+                    break;
+                //X
+                /*case 88:
+                    gameOver();
+                    break;*/
             }
         });
-
-    });
-
+    }
+    
     function moveSnake(direction) {
         
         var snakeLength;
@@ -137,6 +160,6 @@
     function removeTailFromArray() {
         snakeBodyArray.pop();
     }
-    
+
 })();   
 
