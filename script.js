@@ -1,3 +1,4 @@
+//TODO: After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate.
 //TODO: [x]Make the snake tail disappear
 //TODO: Create some kind of Game over view
 //TODO: Game over when hitting tail
@@ -14,7 +15,7 @@
     var myInterval;
     var pixelsToMove = 5;
     var snakeSpeed = 100;
-    var paused = true;
+    var paused = false;
     var snakeLengthLimit = 7;
     var snakeBodyArray = [];
     var gameStarted = false;
