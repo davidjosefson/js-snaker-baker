@@ -13,9 +13,9 @@
     var currentYpos = 50;
     var myInterval;
     var pixelsToMove = 5;
-    var snakeSpeed = 500;
+    var snakeSpeed = 100;
     var paused = true;
-    var snakeLengthLimit = 4;
+    var snakeLengthLimit = 7;
     var snakeBodyArray = [];
     
     $(document).ready(function(){
@@ -23,8 +23,6 @@
         moveSnake("right");
 
         $(document).keydown(function(key){
-            //$('#board').html('This key is pressed: ' + key.which);    
-
             switch(key.which) {
                 //LEFT
                 case 37: 
@@ -58,6 +56,9 @@
                         paused = true;
                     }
                     break;
+                //A
+                case 65:
+                    snakeLengthLimit++;
             }
         });
 
