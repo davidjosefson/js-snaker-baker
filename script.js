@@ -1,4 +1,4 @@
-//TODO: [x]Make the snake tail disappear -> ANVÄND DET FAKTUM ATT DET ALLTID ÄR DEN "FÖRSTA" DIVEN I HTMLen SOM ÄR SIST PÅ SNAKEN. MAN KAN ENKELT TA BORT DEN FÖRSTA CHILD-DIVEN MAN HITTAR!
+//TODO: [x]Make the snake tail disappear
 //TODO: Create some kind of Game over view
 //TODO: Game over when hitting tail
 //TODO: Game over when hitting wall
@@ -29,9 +29,6 @@
             }
         });
         
-        //startGame();
-        
-        //moveSnake("right");
     });
 
     function hideStartGameText() {
