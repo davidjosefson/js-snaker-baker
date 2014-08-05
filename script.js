@@ -8,9 +8,9 @@
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
 /*global $:false */
 (function() {
-    var currentDirection = "right";
-    var currentXpos = 50;
-    var currentYpos = 50;
+    var currentDirection;
+    var currentXpos;
+    var currentYpos;
     var myInterval;
     var pixelsToMove = 5;
     var snakeSpeed = 100;
@@ -20,7 +20,6 @@
     var gameStarted = false;
     
     $(document).ready(function(){
-        
         $(document).keydown(function(){
             if(!gameStarted){
                 hideStartGameText();
@@ -28,7 +27,6 @@
                 gameStarted = true;
             }
         });
-        
     });
 
     function hideStartGameText() {
@@ -36,6 +34,10 @@
     }
     
     function startGame(){
+        currentDirection = "right";
+        currentXpos = 50;
+        currentYpos = 50;
+        
         moveSnake("right");
         
         $(document).keydown(function(key){
@@ -89,13 +91,9 @@
     }
     
     function moveSnake(direction) {
-        
         var snakeLength;
-        
         clearInterval(myInterval);
-
         currentDirection = direction;
-
         myInterval = setInterval(function(){
             drawSnakeHead(direction);
             
@@ -106,7 +104,6 @@
         }, snakeSpeed);
         
         paused = false;
-
     }
 
     function drawSnakeHead(direction) {    
