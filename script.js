@@ -13,13 +13,12 @@
     var currentYpos = 50;
     var myInterval;
     var pixelsToMove = 5;
-    var snakeSpeed = 2000;
+    var snakeSpeed = 500;
     var paused = true;
-    var snakeLength = 0;
     var snakeLengthLimit = 3;
-    var snakeBodyCounter = 0;
-    var removeTailHasRun = false;
-    var flipper = true;
+    //var snakeBodyCounter = 0;
+    //var removeTailHasRun = false;
+    //var flipper = true;
     var snakeBodyArray = [];
     
     $(document).ready(function(){
@@ -68,18 +67,19 @@
     });
 
     function moveSnake(direction) {
+        
+        var snakeLength;
+        
         clearInterval(myInterval);
 
         currentDirection = direction;
 
         myInterval = setInterval(function(){
-            if(snakeLength == snakeLengthLimit)
-                removeSnakeTail();
-            
             drawSnakeHead(direction);
             
-
-            
+            snakeLength = snakeBodyArray.length;
+            if(snakeLength >= snakeLengthLimit)
+                removeSnakeTail();
         }, snakeSpeed);
         
         paused = false;
@@ -104,36 +104,35 @@
         //if(snakeLength == snakeLengthLimit)
         //    var classCounter = snakeBodyCounter;
         //else
-        if(!removeTailHasRun)
+        /*if(!removeTailHasRun)
             var classCounter = snakeBodyCounter + 1;
         else
-            var classCounter = snakeBodyCounter;
+            var classCounter = snakeBodyCounter;*/
         
-        $('#board').append('<div class="snakeHead body' + classCounter + '" style="left: ' + currentXpos + 'px; top:' + currentYpos + 'px;"></div>');
+        $('#board').append('<div class="snakeHead" style="left: ' + currentXpos + 'px; top:' + currentYpos + 'px;"></div>');
         
-        snakeLength++;
+        addHeadToArray(currentXpos, currentYpos);
+        
+       /* snakeLength++;
         snakeBodyCounter++;
-        if((snakeBodyCounter == snakeLengthLimit) && (flipper)) {
+        if((snakeBodyCounter == snakeLengthLimit)) {
             snakeBodyCounter = 1;
-            /*if(flipper)
-                flipper = false;
-            else
-                flipper = true;*/
-        }
+        }*/
         
     }
     
     function removeSnakeTail() {
-        var classToRemove = ".body" + snakeBodyCounter;
-        $(classToRemove).remove();
-        snakeLength--;
-        removeTailHasRun = true;
+        //var classToRemove = ".body" + snakeBodyCounter;
+        $('.snakeHead').first().remove();
+        //snakeLength--;
+        //removeTailHasRun = true;
+        removeTailFromArray();
     }
 
     function addHeadToArray(xPos, yPos) {
         var bodyPart = {
-            xPos: this.xPos, 
-            yPos: this.yPos
+            xPos: xPos, 
+            yPos: yPos
         };
         
         snakeBodyArray.unshift(bodyPart);
