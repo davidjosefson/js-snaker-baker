@@ -1,4 +1,4 @@
-//TODO: After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate.
+//TODO: After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate. KANSKE SKA TESTA ATT BINDA KEYS TILL MEDDELANDE-DIVARNA ISTÄLLET FÖR DOCUMENT I READY?
 //TODO: [x]Make the snake tail disappear
 //TODO: Create some kind of Game over view
 //TODO: Game over when hitting tail
