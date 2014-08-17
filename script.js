@@ -1,10 +1,10 @@
-//TODO: After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate. KANSKE SKA TESTA ATT BINDA KEYS TILL MEDDELANDE-DIVARNA ISTÄLLET FÖR DOCUMENT I READY?
-//TODO: [x]Make the snake tail disappear
 //TODO: Create some kind of Game over view
 //TODO: Game over when hitting tail
 //TODO: Game over when hitting wall
 //TODO: [x]När man ändrar direction så ska den ta bort den nya intervallen och skapa en ny
 //TODO: [x]Om man klickar på en knapp i "samma" riktning ska den ignorera detta (så att man inte kan speeda upp snaken)
+//TODO: [x] After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate. KANSKE SKA TESTA ATT BINDA KEYS TILL MEDDELANDE-DIVARNA ISTÄLLET FÖR DOCUMENT I READY?
+//TODO: [x]Make the snake tail disappear
 
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
 /*global $:false */
@@ -21,31 +21,14 @@
     var gameStarted = false;
     
     $(document).ready(function(){
-        $(document).keydown(function(){
+        $(document).keydown(function(key){
             if(!gameStarted){
                 hideStartGameMessage();
                 hideGameOverMessage();
                 startGame();
                 gameStarted = true;
             }
-        });
-    });
-
-    function hideStartGameMessage() {
-        $('#startGameMessage').css('display', 'none');
-    }
-    
-    function startGame(){
-        gameStarted = true;
-        paused = false;
-        currentDirection = "right";
-        currentXpos = 50;
-        currentYpos = 50;
-        
-        moveSnake("right");
-        
-        $(document).keydown(function(key){
-            if(gameStarted){
+            else {
                 switch(key.which) {
                     //LEFT
                     case 37: 
@@ -93,6 +76,21 @@
                 }
             }
         });
+    });
+
+    function hideStartGameMessage() {
+        $('#startGameMessage').css('display', 'none');
+    }
+    
+    function startGame(){
+        gameStarted = true;
+        paused = false;
+        currentDirection = "right";
+        currentXpos = 50;
+        currentYpos = 50;
+        
+        moveSnake("right");
+
     }
     
     function gameOver(){
@@ -100,13 +98,6 @@
         gameStarted = false;
         resetGame();
         displayGameOverMessage();
-        
-        /*$(document).keydown(function(){
-            if(!gameStarted){
-                hideGameOverMessage();
-                startGame();
-            }
-        });*/
     }
     
     function resetGame() {
@@ -125,7 +116,7 @@
     
     function pauseSnake(){
         clearInterval(myInterval);
-        paused = true;  
+        paused = true;
     }
     
     function moveSnake(direction) {
