@@ -1,10 +1,14 @@
-//TODO: Create some kind of Game over view
+//TODO: Fix board design
+//TODO: Add nicer fonts
+//TODO: Fix start game message design
+//TODO: Fix game over message design
 //TODO: Game over when hitting tail
 //TODO: Game over when hitting wall
 //TODO: [x]När man ändrar direction så ska den ta bort den nya intervallen och skapa en ny
 //TODO: [x]Om man klickar på en knapp i "samma" riktning ska den ignorera detta (så att man inte kan speeda upp snaken)
-//TODO: [x] After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate. KANSKE SKA TESTA ATT BINDA KEYS TILL MEDDELANDE-DIVARNA ISTÄLLET FÖR DOCUMENT I READY?
+//TODO: [x] After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate.
 //TODO: [x]Make the snake tail disappear
+//TODO: [x]Create some kind of Game over view
 
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
 /*global $:false */
@@ -124,6 +128,7 @@
         var snakeLength;
         clearInterval(myInterval);
         currentDirection = direction;
+        
         myInterval = setInterval(function(){
             drawSnakeHead(direction);
             
