@@ -1,0 +1,62 @@
+/*
+
+gameBoard[]
+snake[]
+
+doc ready()
+    initilizeGame(create gameboard array, reset vars like snake length, points and so on)
+    initilizeGUI(draw gameboard, draw start message)
+    
+    keybinding switch hoolabaloo()
+        if(gamenotstarted)
+            any key will remove start game message
+            startgame()
+        if(gamestarted)
+            different keys will do different things
+            LEFT
+                CURRENT_DIRECTION = "left";
+            RIGHT
+            SPACE
+    
+startGame()
+    gameStarted = true;
+    initializeSnake()
+    setInterval()
+        moveSnake(CURRENT_DIRECTION)
+        updateGUI()
+
+initializeSnake(xPos, yPos)
+    create snakeBodyPart-object()
+        xPos
+        yPos
+    add "snakeBodyPart" to end of snake[]
+
+moveSnake(CURRENT_DIRECTION)
+    removeSnakeTail()
+    addSnakeHead(CURRENT_DIRECTION)
+    updateBoardWithNewSnake()
+    
+removeSnakeTail()
+    remove the last object in snake[]
+    
+addSnakeHead(CURRENT_DIRECTION)
+    check coordinates of the first snakeBodyPart-object in snake[]
+    create snakeBodyPart-object with same coordinates
+    switch CURRENT_DIRECTION:
+        "left"
+            snakeBodyPart.xPos -= 1
+        "up"
+            snakeBodyPart.yPos += 1
+        "right"
+            snakeBodyPart.xPos += 1
+        "down"
+            snakeBodyPart.yPos -= 1
+        
+updateBoardWithNewSnake()
+    for every tile-object in gameBoard[] where flag = "snake"
+        set flag = "tile"
+    for every snakeBodyPart-object in snake[]
+        for every tile in gameBoard where tile.xPos = snakeBodyPart.xPos AND tile.yPos = snakeBodyPart.yPos
+            set flag = "snake"
+
+*/
