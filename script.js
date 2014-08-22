@@ -24,8 +24,12 @@
     var snakeLengthLimit = 7;
     var snakeBodyArray = [];
     var gameStarted = false;
+    var gameBoard = [];
     
     $(document).ready(function(){
+        
+        createGameBoard(10);
+        
         $(document).keydown(function(key){
             if(!gameStarted){
                 hideStartGameMessage();
@@ -205,6 +209,20 @@
     //Function to remove the last body part from the array
     function removeTailFromArray() {
         snakeBodyArray.pop();
+    }
+    
+    function createGameBoard(size) {    
+        var tile;
+        for(var i = 0; i < size; i++) {
+            for(var j = 0; j < size; j++) {
+                tile = {
+                    xPos: j,
+                    yPos: i,
+                    flag: "board"
+                };
+                gameBoard.push(tile);
+            }
+        }
     }
 
 })();   
