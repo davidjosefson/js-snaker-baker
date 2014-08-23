@@ -25,10 +25,14 @@
     var snakeBodyArray = [];
     var gameStarted = false;
     var gameBoard = [];
+    var snakeLength;
+    
+    var BOARD_SIZE = 10;
     
     $(document).ready(function(){
         
-        createGameBoard(10);
+        initializeGame();
+        initilizeGUI();
         
         $(document).keydown(function(key){
             if(!gameStarted){
@@ -87,6 +91,16 @@
         });
     });
 
+    function initilizeGame() {
+        createGameBoard(BOARD_SIZE);
+        snakeLength = 1;
+    }
+    
+    function initilizeGUI() {
+        //DRAW GAMEBOARD (canvas?)
+        //START GAME MESSAGE
+    }
+    
     function hideStartGameMessage() {
         $('#startGameMessage').css('display', 'none');
     }
