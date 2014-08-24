@@ -29,9 +29,9 @@
     var snakeLength;
     
     
-    var TILE_PX = 10;            //Number of pixels each tile consists of
+    var TILE_PX = 7;            //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;      //Same as the tile size
-    var BOARD_SIDE = 10;         //Number of tiles on one side of the board
+    var BOARD_SIDE = 50;         //Number of tiles on one side of the board
     var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
     
     
@@ -126,6 +126,39 @@
         
         //Add that snake head to the snake array
         snake.push(firstSnakeHead);
+        
+        var a = new SnakeHead(0, 0);
+        snake.push(a);
+        
+        var b = new SnakeHead(1, 1);
+        snake.push(b);
+        
+        var c = new SnakeHead(2, 2);
+        snake.push(c);
+        
+        var d = new SnakeHead(3, 3);
+        snake.push(d);
+        
+        var e = new SnakeHead(4, 4);
+        snake.push(e);
+        
+        var f = new SnakeHead(5, 5);
+        snake.push(f);
+        
+        var g = new SnakeHead(6, 6);
+        snake.push(g);
+        
+        var h = new SnakeHead(7, 7);
+        snake.push(h);
+        
+        var i = new SnakeHead(8, 8);
+        snake.push(i);
+        
+        var j = new SnakeHead(9, 9);
+        snake.push(j);
+        
+        //snake.push(a,b,c,d,e,f,g,h,i,j);
+
     }
     
     //SNAKEHEAD OBJECT CONSTRUCTOR
@@ -185,7 +218,7 @@
                 switch (gameBoard[i].flag) {
                     case "snake":
                         xPixels = gameBoard[i].xPos * TILE_PX;
-                        yPixels = BOARD_SIDE_PX - gameBoard[i].yPos * TILE_PX;
+                        yPixels = BOARD_SIDE_PX - TILE_PX - gameBoard[i].yPos * TILE_PX;
                         context.fillStyle = "#D891A8";
                         context.fillRect(xPixels, yPixels, SNAKE_PX, SNAKE_PX);
                         break;
@@ -337,12 +370,6 @@
         for(var i = 0; i < size; i++) {
             for(var j = 0; j < size; j++) {
                 tile = new Tile(j, i, "empty");
-                /*REPLACING THIS WITH A TILE CONSTRUCTOR INSTEAD
-                tile = {
-                    xPos: j,
-                    yPos: i,
-                    flag: "board"
-                }; */
                 gameBoard.push(tile);
             }
         }
