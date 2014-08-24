@@ -166,6 +166,10 @@
         var canvas = document.getElementById('snakeBoard');
         var context = canvas.getContext("2d");
         
+        //Set the canvas to the same size as the board
+        canvas.height = BOARD_SIDE_PX;
+        canvas.width = BOARD_SIDE_PX;
+        
         //Set board color
         context.fillStyle = "#98D1AD";
         
