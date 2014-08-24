@@ -25,6 +25,7 @@
     var snakeBodyArray = [];
     var gameStarted = false;
     var gameBoard = [];
+    var snake = [];
     var snakeLength;
     
     
@@ -97,13 +98,70 @@
     });
 
     function initializeGame() {
+        //Creates a gameboard grid with tiles (no snakes yet)
         createGameBoard(BOARD_SIDE);
+        
+        //Add snake head to the snake array
+        initilizeSnake();
+        
+        //Reads the snake array and updates the gameboard grid
+        updateGameBoard();
+        
+        //SEN KAN JAG LÅTA DRAWGAMEBOARD() GÅ IGENOM GAMEBOARD-ARRAYEN OCH RITA UT ACCORDINGLY
+        //SKA DRAWGAMEBOARD SKÖTA BÅDE INITIERINGEN OCH INTERVALLUPPDATERINGEN SENARE?
+        
         snakeLength = 1;
     }
     
     function initilizeGUI() {
         drawGameBoard();
         //START GAME MESSAGE
+    }
+    
+    function initilizeSnake() {
+        //Sets coordinates for the snake head relative to the board size
+        var xPos = BOARD_SIDE/4;    //Start a quarter from the left border
+        var yPos = BOARD_SIDE/2;    //Start in the middle on the y-axis    
+        
+        //Create a snake head
+        var firstSnakeHead = new SnakeHead(xPos, yPos);
+        
+        //Add that snake head to the snake array
+        snake.push(firstSnakeHead);
+    }
+    
+    //SNAKEHEAD OBJECT CONSTRUCTOR
+    function SnakeHead(xPos, yPos) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+    }
+    
+    //TILE OBJECT CONSTRUCTOR
+    function Tile(xPos, yPos, flag) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.flag = flag;
+    }
+    
+    function updateGameBoard() {
+        //Reset all snake tiles in the game board array
+        for(var i = 0; i < gameBoard.length; i++) {
+            if(gameBoard[i].flag == "snake") {
+                gameBoard[i].flag = "empty";
+            }
+        }
+        
+        //Loops through the snake array
+        for(var j = 0; j < snake.length; j++) {
+            //Loops through the game board array
+            for(var k = 0; k < gameBoard.length; k++){
+                //If the current snake coordinates equals those of the game board tile,
+                //set the current game board tile flag to "snake"
+                if((snake[j].xPos == gameBoard[k].xPos) && (snake[j].yPos == gameBoard[k].yPos)) {
+                    gameBoard[k].flag = "snake";
+                }
+            }
+        }
     }
     
     function drawGameBoard() {
@@ -115,10 +173,12 @@
         context.fillRect(100, 100, BOARD_SIDE_PX, BOARD_SIDE_PX);
     }
     
+    //OLD
     function hideStartGameMessage() {
         $('#startGameMessage').css('display', 'none');
     }
     
+    //OLD
     function startGame(){
         gameStarted = true;
         paused = false;
@@ -130,6 +190,7 @@
 
     }
     
+    //OLD
     function gameOver(){
         //pauseSnake();
         gameStarted = false;
@@ -137,25 +198,30 @@
         displayGameOverMessage();
     }
     
+    //OLD
     function resetGame() {
         $('.snakeHead').remove();
         snakeBodyArray = [];
         clearInterval(myInterval);
     }
     
+    //OLD
     function displayGameOverMessage(){
         $('#gameOverMessage').css('display','block');
     }
     
+    //OLD
     function hideGameOverMessage(){
         $('#gameOverMessage').css('display','none');
     }
     
+    //OLD
     function pauseSnake(){
         clearInterval(myInterval);
         paused = true;
     }
     
+    //OLD
     function moveSnake(direction) {
         paused = false;
         var snakeLength;
@@ -174,6 +240,7 @@
         paused = false;
     }
 
+    //OLD
     function drawSnakeHead(direction) {    
         switch(direction){
             case "left":
@@ -203,6 +270,7 @@
         }
     }
     
+    //OLD
     function checkTailCollision(currentXpos, currentYpos) {
         if(snakeBodyArray.length > 0) {
             for(var i = 0; i < snakeBodyArray.length; i++) {
@@ -214,6 +282,7 @@
         return false;
     }
     
+    //OLD
     function removeSnakeTail() {
         //Remove from HTML (the visual snake)
         $('.snakeHead').first().remove();
@@ -222,6 +291,7 @@
         removeTailFromArray();
     }
     
+    //OLD
     //Function to add a new head to the array
     function addHeadToArray(xPos, yPos) {
         //Create a new body part with coordinates
@@ -234,6 +304,7 @@
         snakeBodyArray.unshift(bodyPart);
     }
     
+    //OLD
     //Function to remove the last body part from the array
     function removeTailFromArray() {
         snakeBodyArray.pop();
@@ -243,11 +314,13 @@
         var tile;
         for(var i = 0; i < size; i++) {
             for(var j = 0; j < size; j++) {
+                tile = new Tile(j, i, "empty");
+                /*REPLACING THIS WITH A TILE CONSTRUCTOR INSTEAD
                 tile = {
                     xPos: j,
                     yPos: i,
                     flag: "board"
-                };
+                }; */
                 gameBoard.push(tile);
             }
         }
