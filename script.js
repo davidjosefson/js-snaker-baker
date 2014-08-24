@@ -114,7 +114,7 @@
     }
     
     function initilizeGUI() {
-        drawGameBoard();
+        drawGUI();
         //START GAME MESSAGE
     }
     
@@ -164,13 +164,33 @@
         }
     }
     
-    function drawGameBoard() {
+    function drawGUI() {
         var canvas = document.getElementById('snakeBoard');
         var context = canvas.getContext("2d");
-                
+        
+        //Set board color
         context.fillStyle = "#98D1AD";
         
-        context.fillRect(100, 100, BOARD_SIDE_PX, BOARD_SIDE_PX);
+        //Draw the board
+        context.fillRect(0, 0, BOARD_SIDE_PX, BOARD_SIDE_PX);
+        
+        //Draw the tiles
+        var xPixels;
+        var yPixels;
+        
+        if(gameBoard.length !== 0) {
+            for(var i = 0; i < gameBoard.length; i++) {
+                switch (gameBoard[i].flag) {
+                    case "snake":
+                        xPixels = gameBoard[i].xPos * TILE_PX;
+                        yPixels = BOARD_SIDE_PX - gameBoard[i].yPos * TILE_PX;
+                        context.fillStyle = "#D891A8";
+                        context.fillRect(xPixels, yPixels, SNAKE_PX, SNAKE_PX);
+                        break;
+                }
+            }
+        }
+        
     }
     
     //OLD
