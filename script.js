@@ -27,7 +27,12 @@
     var gameBoard = [];
     var snakeLength;
     
-    var BOARD_SIZE = 10;
+    
+    var TILE_PX = 10;            //Number of pixels each tile consists of
+    var SNAKE_PX = TILE_PX;      //Same as the tile size
+    var BOARD_SIDE = 30;         //Number of tiles on one side of the board
+    var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
+    
     
     $(document).ready(function(){
         
@@ -91,14 +96,23 @@
         });
     });
 
-    function initilizeGame() {
-        createGameBoard(BOARD_SIZE);
+    function initializeGame() {
+        createGameBoard(BOARD_SIDE);
         snakeLength = 1;
     }
     
     function initilizeGUI() {
-        //DRAW GAMEBOARD (canvas?)
+        drawGameBoard();
         //START GAME MESSAGE
+    }
+    
+    function drawGameBoard() {
+        var canvas = document.getElementById('snakeBoard');
+        var context = canvas.getContext("2d");
+                
+        context.fillStyle = "#98D1AD";
+        
+        context.fillRect(100, 100, BOARD_SIDE_PX, BOARD_SIDE_PX);
     }
     
     function hideStartGameMessage() {
