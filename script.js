@@ -107,9 +107,7 @@
         //Reads the snake array and updates the gameboard grid
         updateGameBoard();
         
-        //SEN KAN JAG LÅTA DRAWGAMEBOARD() GÅ IGENOM GAMEBOARD-ARRAYEN OCH RITA UT ACCORDINGLY
-        //SKA DRAWGAMEBOARD SKÖTA BÅDE INITIERINGEN OCH INTERVALLUPPDATERINGEN SENARE?
-        
+        //Resets the snakeLength
         snakeLength = 1;
     }
     
