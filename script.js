@@ -1,3 +1,4 @@
+//TODO: Make the snake move!
 //TODO: Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
 //TODO: Fix board design
 //TODO: Add nicer fonts
@@ -126,39 +127,6 @@
         
         //Add that snake head to the snake array
         snake.push(firstSnakeHead);
-        
-        var a = new SnakeHead(0, 0);
-        snake.push(a);
-        
-        var b = new SnakeHead(1, 1);
-        snake.push(b);
-        
-        var c = new SnakeHead(2, 2);
-        snake.push(c);
-        
-        var d = new SnakeHead(3, 3);
-        snake.push(d);
-        
-        var e = new SnakeHead(4, 4);
-        snake.push(e);
-        
-        var f = new SnakeHead(5, 5);
-        snake.push(f);
-        
-        var g = new SnakeHead(6, 6);
-        snake.push(g);
-        
-        var h = new SnakeHead(7, 7);
-        snake.push(h);
-        
-        var i = new SnakeHead(8, 8);
-        snake.push(i);
-        
-        var j = new SnakeHead(9, 9);
-        snake.push(j);
-        
-        //snake.push(a,b,c,d,e,f,g,h,i,j);
-
     }
     
     //SNAKEHEAD OBJECT CONSTRUCTOR
