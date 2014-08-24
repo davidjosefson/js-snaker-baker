@@ -31,7 +31,7 @@
     
     var TILE_PX = 10;            //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;      //Same as the tile size
-    var BOARD_SIDE = 30;         //Number of tiles on one side of the board
+    var BOARD_SIDE = 10;         //Number of tiles on one side of the board
     var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
     
     
@@ -118,8 +118,8 @@
     
     function initilizeSnake() {
         //Sets coordinates for the snake head relative to the board size
-        var xPos = BOARD_SIDE/4;    //Start a quarter from the left border
-        var yPos = BOARD_SIDE/2;    //Start in the middle on the y-axis    
+        var xPos = Math.floor(BOARD_SIDE/4);    //Start a quarter from the left border
+        var yPos = Math.floor(BOARD_SIDE/2);    //Start in the middle on the y-axis    
         
         //Create a snake head
         var firstSnakeHead = new SnakeHead(xPos, yPos);
