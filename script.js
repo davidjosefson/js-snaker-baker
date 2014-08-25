@@ -42,63 +42,8 @@
         
         initializeGame();
         initilizeGUI();
-        
-        startGame();
-        
-        /*
-        
-        $(document).keydown(function(key){
-            if(!gameStarted){
-                startGame();
-            }
-            else {
-                switch(key.which) {
-                    //LEFT
-                    case 37: 
-                        if((currentDirection != "right") && (currentDirection != "left")){
-                            moveSnake("left");
-                        }
-                        break;
-
-                    //UP
-                    case 38:
-                        if((currentDirection != "down") && (currentDirection != "up")){
-                            moveSnake("up");
-                        }
-                        break;                
-
-                    //RIGHT
-                    case 39: 
-                        if((currentDirection != "right") && (currentDirection != "left")){
-                            moveSnake("right");
-                        }
-                        break;
-                    //DOWN
-                    case 40:
-                        if((currentDirection != "down") && (currentDirection != "up")) {
-                            moveSnake("down");
-                        }
-                        break;
-                    //SPACE
-                    case 32:
-                        if(paused){
-                            moveSnake(currentDirection);
-                        }
-                        else {
-                            pauseSnake();
-                        }
-                        break;
-                    //A
-                    case 65:
-                        snakeLengthLimit++;
-                        break;
-                    //X
-                    case 88:
-                        gameOver();
-                        break;
-                }
-            }
-        }); */
+        setKeyEvents();
+         
     });
 
     function initializeGame() {
@@ -130,6 +75,67 @@
         
         //Add that snake head to the snake array
         snake.push(firstSnakeHead);
+    }
+    
+    function setKeyEvents() {
+        $(document).keydown(function(key){
+            //Press any key to start the game
+            if(!gameStarted){
+                startGame();
+            }
+            //Game started
+            else {
+                switch(key.which) {
+                    //LEFT
+                    case 37: 
+                        if((direction != "right") && (direction != "left")){
+                            //moveSnake("left");
+                            direction = "left";
+                        }
+                        break;
+
+                    //UP
+                    case 38:
+                        if((direction != "down") && (direction != "up")){
+                            //moveSnake("up");
+                            direction = "up";
+                        }
+                        break;                
+
+                    //RIGHT
+                    case 39: 
+                        if((direction != "right") && (direction != "left")){
+                            //moveSnake("right");
+                            direction = "right";
+                        }
+                        break;
+                    //DOWN
+                    case 40:
+                        if((direction != "down") && (direction != "up")) {
+                            //moveSnake("down");
+                            direction = "down";
+                        }
+                        break;
+                    //SPACE
+                    case 32:
+                        if(paused){
+                            moveSnake(direction);
+                        }
+                        else {
+                            pauseSnake();
+                        }
+                        break;
+                    //A
+                    case 65:
+                        snakeLengthLimit++;
+                        break;
+                    //X
+                    case 88:
+                        gameOver();
+                        break;
+                }
+            }
+        });
     }
     
     //SNAKEHEAD OBJECT CONSTRUCTOR
