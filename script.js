@@ -15,18 +15,9 @@
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
 /*global $:false */
 (function() {
-    var currentDirection;
-    var currentXpos;
-    var currentYpos;
-    var pixelsToMove = 5;
-    var snakeSpeed = 100;
-    var paused = true;
-    var snakeLengthLimit = 7;
-    var snakeBodyArray = [];
-    var isGameStarted = false;
-    
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;  //How long the snake is allowed to grow when starting the game
+    var SNAKESPEED = 100;
     var TILE_PX = 7;             //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;      //Same as the tile size
     var BOARD_SIDE = 50;         //Number of tiles on one side of the board
@@ -37,8 +28,10 @@
     var direction = START_DIRECTION;
     var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
-    var isGameOver = false;
     
+    var isGameStarted = false;
+    var isGameOver = false;
+    var isPaused = true;
     
     $(document).ready(function(){
         initializeGame();
@@ -70,7 +63,6 @@
     function initilizeGUI() {
         drawGUI();
         displayStartGameMessage();
-        //START GAME MESSAGE
     }
     
     function createSnake() {
@@ -137,7 +129,7 @@
                         break;
                     //SPACE
                     case 32:
-                        if(paused){
+                        if(isPaused){
                             moveSnake();
                         }
                         else {
@@ -246,7 +238,7 @@
     }
     
     function moveSnake() {
-        paused = false;
+        isPaused = false;
         clearInterval(myInterval);
         
         myInterval = setInterval(function(){
@@ -258,27 +250,18 @@
             updateGameBoard();
             drawGUI();
             
-        }, snakeSpeed);
+        }, SNAKESPEED);
     }
     
     function gameOver(){
-        isGameOver = true;
         clearInterval(myInterval);
+        isGameOver = true;
         displayGameOverMessage();
     }
-    
-/*    function resetGame() {
-        initializeGame();
-        //$('.snakeHead').remove();
-        //snakeBodyArray = [];
-        //clearInterval(myInterval);
-    } */
-    
 
-    
     function pauseSnake(){
         clearInterval(myInterval);
-        paused = true;
+        isPaused = true;
     } 
     
     function addSnakeHead(direction) {
