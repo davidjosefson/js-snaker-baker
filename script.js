@@ -23,7 +23,7 @@
     var paused = true;
     var snakeLengthLimit = 7;
     var snakeBodyArray = [];
-    var gameStarted = false;
+    var isGameStarted = false;
     
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;  //How long the snake is allowed to grow when starting the game
@@ -55,7 +55,7 @@
         
         //Resets constants
         isGameOver = false;
-        gameStarted = false;
+        isGameStarted = false;
         
         //Resets and creates a gameboard grid with tiles (no snakes yet)
         createGameBoard(BOARD_SIDE);
@@ -92,7 +92,7 @@
     function setKeyEvents() {
         $(document).keydown(function(key){
             //Press any key to start the game
-            if(!gameStarted){
+            if(!isGameStarted){
                 if(key.which == 13) {
                     hideStartGameMessage();
                     startGame();
@@ -239,8 +239,9 @@
     function hideGameOverMessage(){
         $('#gameOverMessage').css('display','none');
     }
+    
     function startGame(){
-        gameStarted = true;
+        isGameStarted = true;
         moveSnake();
     }
     
