@@ -20,7 +20,7 @@
     var currentYpos;
     var pixelsToMove = 5;
     var snakeSpeed = 100;
-    var paused = false;
+    var paused = true;
     var snakeLengthLimit = 7;
     var snakeBodyArray = [];
     var gameStarted = false;
@@ -35,37 +35,49 @@
     var gameBoard = [];
     var snake = [];
     var direction = START_DIRECTION;
+    var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
+    var isGameOver = false;
     
     
     $(document).ready(function(){
-        
         initializeGame();
         initilizeGUI();
         setKeyEvents();
-         
     });
 
     function initializeGame() {
-        //Creates a gameboard grid with tiles (no snakes yet)
+        //Set start direction
+        direction = START_DIRECTION;
+        
+        //Set snake start length
+        snakeLengthLimit = SNAKE_START_LENGTH;
+        
+        //Resets constants
+        isGameOver = false;
+        gameStarted = false;
+        
+        //Resets and creates a gameboard grid with tiles (no snakes yet)
         createGameBoard(BOARD_SIDE);
         
         //Add snake head to the snake array
-        initilizeSnake();
+        createSnake();
         
         //Reads the snake array and updates the gameboard grid
         updateGameBoard();
-        
-        //Resets the snakeLength
-        snakeLength = 1;
     }
     
     function initilizeGUI() {
         drawGUI();
+        displayStartGameMessage();
         //START GAME MESSAGE
     }
     
-    function initilizeSnake() {
+    function createSnake() {
+        if(snake.length > 0) {
+            snake = [];
+        }
+        
         //Sets coordinates for the snake head relative to the board size
         var xPos = Math.floor(BOARD_SIDE/4);    //Start a quarter from the left border
         var yPos = Math.floor(BOARD_SIDE/2);    //Start in the middle on the y-axis    
@@ -81,8 +93,19 @@
         $(document).keydown(function(key){
             //Press any key to start the game
             if(!gameStarted){
-                startGame();
+                if(key.which == 13) {
+                    hideStartGameMessage();
+                    startGame();
+                }
             }
+            //Press any key to remove game over message
+            else if(isGameOver) {
+                if(key.which == 13) {
+                    hideGameOverMessage();
+                    initializeGame();
+                    initilizeGUI();
+                }
+            } 
             //Game started
             else {
                 switch(key.which) {
@@ -115,7 +138,7 @@
                     //SPACE
                     case 32:
                         if(paused){
-                            moveSnake(direction);
+                            moveSnake();
                         }
                         else {
                             pauseSnake();
@@ -123,7 +146,7 @@
                         break;
                     //A
                     case 65:
-                        SNAKE_START_LENGTH++;
+                        snakeLengthLimit++;
                         break;
                     //X
                     case 88:
@@ -201,82 +224,62 @@
         
     }
     
-    //OLD
+    function displayStartGameMessage() {
+        $('#startGameMessage').css('display', 'block');    
+    }
+    
     function hideStartGameMessage() {
         $('#startGameMessage').css('display', 'none');
     }
     
-    function startGame(){
-        gameStarted = true;
-        paused = false;
-
-        myInterval = setInterval(function(){
-            addSnakeHead(direction);
-        
-            if(snake.length > SNAKE_START_LENGTH) {
-                removeSnakeTail();
-            }
-            
-            updateGameBoard();
-            
-            drawGUI();
-        
-        }, snakeSpeed);
-
-    }
-    
-    //OLD
-    /*function gameOver(){
-        //pauseSnake();
-        gameStarted = false;
-        resetGame();
-        displayGameOverMessage();
-    }
-    
-    //OLD
-    function resetGame() {
-        $('.snakeHead').remove();
-        snakeBodyArray = [];
-        clearInterval(myInterval);
-    }
-    
-    //OLD
     function displayGameOverMessage(){
         $('#gameOverMessage').css('display','block');
     }
     
-    //OLD
     function hideGameOverMessage(){
         $('#gameOverMessage').css('display','none');
     }
+    function startGame(){
+        gameStarted = true;
+        moveSnake();
+    }
     
-    //OLD
+    function moveSnake() {
+        paused = false;
+        clearInterval(myInterval);
+        
+        myInterval = setInterval(function(){
+            addSnakeHead(direction);
+            if(snake.length > snakeLengthLimit) {
+                removeSnakeTail();
+            }
+            
+            updateGameBoard();
+            drawGUI();
+            
+        }, snakeSpeed);
+    }
+    
+    function gameOver(){
+        isGameOver = true;
+        clearInterval(myInterval);
+        displayGameOverMessage();
+    }
+    
+/*    function resetGame() {
+        initializeGame();
+        //$('.snakeHead').remove();
+        //snakeBodyArray = [];
+        //clearInterval(myInterval);
+    } */
+    
+
+    
     function pauseSnake(){
         clearInterval(myInterval);
         paused = true;
-    } */
+    } 
     
-    //OLD
-    /*
-    function moveSnake(direction) {
-        paused = false;
-        var snakeLength;
-        clearInterval(myInterval);
-        currentDirection = direction;
-        
-        myInterval = setInterval(function(){
-            drawSnakeHead(direction);
-            
-            snakeLength = snakeBodyArray.length;
-            if(snakeLength >= snakeLengthLimit) {
-                removeSnakeTail();
-            }
-        }, snakeSpeed);
-        
-        paused = false;
-    }
-    */
-
     function addSnakeHead(direction) {
         var currentHeadXpos = snake[0].xPos;
         var currentHeadYpos = snake[0].yPos;
@@ -339,6 +342,10 @@
     
     
     function createGameBoard(size) {    
+        if(gameBoard.length > 0) {
+            gameBoard = [];
+        }
+        
         var tile;
         for(var i = 0; i < size; i++) {
             for(var j = 0; j < size; j++) {
