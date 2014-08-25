@@ -18,19 +18,19 @@
     var currentDirection;
     var currentXpos;
     var currentYpos;
-    var myInterval;
     var pixelsToMove = 5;
     var snakeSpeed = 100;
     var paused = false;
     var snakeLengthLimit = 7;
     var snakeBodyArray = [];
     var gameStarted = false;
+    
     var gameBoard = [];
     var snake = [];
-    var snakeLength;
-    
     var direction;
+    var myInterval;
     
+    var SNAKE_START_LENGTH = 5;  //How long the snake is allowed to grow when starting the game
     var TILE_PX = 7;             //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;      //Same as the tile size
     var BOARD_SIDE = 50;         //Number of tiles on one side of the board
@@ -207,20 +207,13 @@
         gameStarted = true;
         paused = false;
         direction = "right";
-        /*currentXpos = 50;
-        currentYpos = 50;*/
-        
-        //moveSnake(direction);
 
         myInterval = setInterval(function(){
             addSnakeHead(direction);
-
-            //removeSnakeTail();
             
-            /*snakeLength = snakeBodyArray.length;
-            if(snakeLength >= snakeLengthLimit) { 
+            if(snake.length > SNAKE_START_LENGTH) {
                 removeSnakeTail();
-            }*/
+            }
         }, snakeSpeed);
 
     }
@@ -323,13 +316,9 @@
         return false;
     }
     
-    //OLD
     function removeSnakeTail() {
-        //Remove from HTML (the visual snake)
-        $('.snakeHead').first().remove();
-        
-        //Remove from the coordinates-array
-        removeTailFromArray();
+        //Remove the last object from the snake array
+        snake.pop();
     }
 
     //Function to add a new head to the array
@@ -341,11 +330,6 @@
         snake.unshift(snakeHead);
     }
     
-    //OLD
-    //Function to remove the last body part from the array
-    function removeTailFromArray() {
-        snakeBodyArray.pop();
-    }
     
     function createGameBoard(size) {    
         var tile;
