@@ -25,16 +25,17 @@
     var snakeBodyArray = [];
     var gameStarted = false;
     
-    var gameBoard = [];
-    var snake = [];
-    var direction;
-    var myInterval;
-    
+    var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;  //How long the snake is allowed to grow when starting the game
     var TILE_PX = 7;             //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;      //Same as the tile size
     var BOARD_SIDE = 50;         //Number of tiles on one side of the board
     var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
+    
+    var gameBoard = [];
+    var snake = [];
+    var direction = START_DIRECTION;
+    var myInterval;
     
     
     $(document).ready(function(){
@@ -206,14 +207,18 @@
     function startGame(){
         gameStarted = true;
         paused = false;
-        direction = "right";
 
         myInterval = setInterval(function(){
             addSnakeHead(direction);
-            
+        
             if(snake.length > SNAKE_START_LENGTH) {
                 removeSnakeTail();
             }
+            
+            updateGameBoard();
+            
+            drawGUI();
+        
         }, snakeSpeed);
 
     }
