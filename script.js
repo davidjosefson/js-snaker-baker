@@ -29,8 +29,9 @@
     var snake = [];
     var snakeLength;
     
+    var direction;
     
-    var TILE_PX = 7;            //Number of pixels each tile consists of
+    var TILE_PX = 7;             //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;      //Same as the tile size
     var BOARD_SIDE = 50;         //Number of tiles on one side of the board
     var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
@@ -41,12 +42,13 @@
         initializeGame();
         initilizeGUI();
         
+        startGame();
+        
+        /*
+        
         $(document).keydown(function(key){
             if(!gameStarted){
-                hideStartGameMessage();
-                hideGameOverMessage();
                 startGame();
-                gameStarted = true;
             }
             else {
                 switch(key.which) {
@@ -95,7 +97,7 @@
                         break;
                 }
             }
-        });
+        }); */
     });
 
     function initializeGame() {
@@ -201,20 +203,30 @@
         $('#startGameMessage').css('display', 'none');
     }
     
-    //OLD
     function startGame(){
         gameStarted = true;
         paused = false;
-        currentDirection = "right";
-        currentXpos = 50;
-        currentYpos = 50;
+        direction = "right";
+        /*currentXpos = 50;
+        currentYpos = 50;*/
         
-        moveSnake("right");
+        //moveSnake(direction);
+
+        myInterval = setInterval(function(){
+            addSnakeHead(direction);
+
+            //removeSnakeTail();
+            
+            /*snakeLength = snakeBodyArray.length;
+            if(snakeLength >= snakeLengthLimit) { 
+                removeSnakeTail();
+            }*/
+        }, snakeSpeed);
 
     }
     
     //OLD
-    function gameOver(){
+    /*function gameOver(){
         //pauseSnake();
         gameStarted = false;
         resetGame();
@@ -242,9 +254,10 @@
     function pauseSnake(){
         clearInterval(myInterval);
         paused = true;
-    }
+    } */
     
     //OLD
+    /*
     function moveSnake(direction) {
         paused = false;
         var snakeLength;
@@ -262,42 +275,47 @@
         
         paused = false;
     }
+    */
 
-    //OLD
-    function drawSnakeHead(direction) {    
+    function addSnakeHead(direction) {
+        var currentHeadXpos = snake[0].xPos;
+        var currentHeadYpos = snake[0].yPos;
+        var xPos;
+        var yPos;
+
         switch(direction){
             case "left":
-                currentXpos -= pixelsToMove;
+                xPos = currentHeadXpos - 1
+                yPos = currentHeadYpos;
                 break;
             case "up":
-                currentYpos -= pixelsToMove;
+                xPos = currentHeadXpos;
+                yPos = currentHeadYpos + 1;
                 break;
             case "right":
-                currentXpos += pixelsToMove;
+                xPos = currentHeadXpos + 1;
+                yPos = currentHeadYpos;
                 break;
             case "down":
-                currentYpos += pixelsToMove;
+                xPos = currentHeadXpos;
+                yPos = currentHeadYpos - 1;
                 break;
         }
         
-        //Check if the coordinates already exists (if the snake has collided with itself)
-        if(checkTailCollision(currentXpos, currentYpos)) {
+        //Check if the coordinates already exists in the snake array (if the snake has collided with itself)
+        if(checkTailCollision(xPos, yPos)) {
             gameOver();
         }
         else {
-             //Draws the head on the board
-            $('#board').append('<div class="snakeHead" style="left: ' + currentXpos + 'px; top:' + currentYpos + 'px;"></div>');
-
-            //Adds coordinates to the array
-            addHeadToArray(currentXpos, currentYpos);    
+            //Adds coordinates to the snake array
+            addHeadToArray(xPos, yPos);
         }
     }
     
-    //OLD
-    function checkTailCollision(currentXpos, currentYpos) {
-        if(snakeBodyArray.length > 0) {
-            for(var i = 0; i < snakeBodyArray.length; i++) {
-                if((snakeBodyArray[i].xPos == currentXpos) && (snakeBodyArray[i].yPos == currentYpos)){
+    function checkTailCollision(xPos, yPos) {
+        if(snake.length > 0) {
+            for(var i = 0; i < snake.length; i++) {
+                if((snake[i].xPos == xPos) && (snake[i].yPos == yPos)){
                     return true;
                 }
             }
@@ -313,18 +331,14 @@
         //Remove from the coordinates-array
         removeTailFromArray();
     }
-    
-    //OLD
+
     //Function to add a new head to the array
     function addHeadToArray(xPos, yPos) {
         //Create a new body part with coordinates
-        var bodyPart = {
-            xPos: xPos, 
-            yPos: yPos
-        };
+        var snakeHead = new SnakeHead(xPos, yPos);
         
-        //Adds the body part object to the beginning of the array
-        snakeBodyArray.unshift(bodyPart);
+        //Adds the snake head object to the beginning of the array
+        snake.unshift(snakeHead);
     }
     
     //OLD
