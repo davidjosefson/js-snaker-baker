@@ -89,7 +89,6 @@
                     //LEFT
                     case 37: 
                         if((direction != "right") && (direction != "left")){
-                            //moveSnake("left");
                             direction = "left";
                         }
                         break;
@@ -97,7 +96,6 @@
                     //UP
                     case 38:
                         if((direction != "down") && (direction != "up")){
-                            //moveSnake("up");
                             direction = "up";
                         }
                         break;                
@@ -105,14 +103,12 @@
                     //RIGHT
                     case 39: 
                         if((direction != "right") && (direction != "left")){
-                            //moveSnake("right");
                             direction = "right";
                         }
                         break;
                     //DOWN
                     case 40:
                         if((direction != "down") && (direction != "up")) {
-                            //moveSnake("down");
                             direction = "down";
                         }
                         break;
@@ -127,7 +123,7 @@
                         break;
                     //A
                     case 65:
-                        snakeLengthLimit++;
+                        SNAKE_START_LENGTH++;
                         break;
                     //X
                     case 88:
