@@ -1,3 +1,4 @@
+//TODO: Add random "apples" on the board
 //TODO: [x]Game over when hitting wall
 //TODO: Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
 //TODO: Fix board design
