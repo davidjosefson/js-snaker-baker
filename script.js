@@ -22,13 +22,13 @@
     var TILE_PX = 7;                //Number of pixels each tile consists of
     var SNAKE_PX = TILE_PX;         //Same as the tile size
     
-    var LARGE_BOARD_SIDE = 100;    //Number of tiles on one side of the large hidden board (surrounding the small starting board)
+    var LARGE_BOARD_SIDE = 50;    //Number of tiles on one side of the large hidden board (surrounding the small starting board)
     var LARGE_BOARD_SIDE_PX = LARGE_BOARD_SIDE*TILE_PX;
     
-    var SMALL_BOARD_START_XPOS = 25;      //X-coordinate where the small board should start
-    var SMALL_BOARD_START_YPOS = 25;      //Y-coordinate where the small board should start
-    var SMALL_BOARD_END_XPOS = 50;      //X-coordinate where the small board should start
-    var SMALL_BOARD_END_YPOS = 50;      //Y-coordinate where the small board should start
+    var SMALL_BOARD_START_XPOS = 0;      //X-coordinate where the small board should start
+    var SMALL_BOARD_START_YPOS = 0;      //Y-coordinate where the small board should start
+    var SMALL_BOARD_END_XPOS = 25;      //X-coordinate where the small board should start
+    var SMALL_BOARD_END_YPOS = 25;      //Y-coordinate where the small board should start
     
     var gameBoard = [[]];       //Two dimensional array
     var snake = [];
@@ -175,8 +175,8 @@
         var appleOnBoard = false;
         
         //Loop through the game board and reset all snake flags
-        for(var i = 0; i < gameBoard[i].length; i++) {
-            for(var j = 0; j < gameBoard[i][j].length; j++){
+        for(var i = 0; i < gameBoard.length; i++) {
+            for(var j = 0; j < gameBoard[i].length; j++){
                 if(gameBoard[i][j].flag == "snake") {
                     gameBoard[i][j].flag = "empty";
                 }
@@ -200,35 +200,40 @@
         var context = canvas.getContext("2d");
         
         //Set the canvas to the same size as the board
-        canvas.height = BOARD_SIDE_PX;
-        canvas.width = BOARD_SIDE_PX;
-        
-        //Set board color
-        context.fillStyle = "#98D1AD";
-        
-        //Draw the board
-        context.fillRect(0, 0, BOARD_SIDE_PX, BOARD_SIDE_PX);
+        canvas.height = LARGE_BOARD_SIDE_PX;
+        canvas.width = LARGE_BOARD_SIDE_PX;
         
         //Draw the tiles
         var xPixels;
         var yPixels;
         
         if(gameBoard.length !== 0) {
+            //Loops through every tile of the gameBoard
             for(var i = 0; i < gameBoard.length; i++) {
                 for(var j = 0; j < gameBoard[i].length; j++){
+                    //Set startpixels
+                    xPixels = gameBoard[i][j].xPos * TILE_PX;
+                    yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - gameBoard[i][j].yPos * TILE_PX;                    
+                    
+                    //Different colors for different types of tiles
                     switch (gameBoard[i][j].flag) {
-                        case "snake":
-                            xPixels = gameBoard[i][j].xPos * TILE_PX;
-                            yPixels = BOARD_SIDE_PX - TILE_PX - gameBoard[i][j].yPos * TILE_PX;
-                            context.fillStyle = "#D891A8";
-                            context.fillRect(xPixels, yPixels, SNAKE_PX, SNAKE_PX);
+                        case "smallBoard":
+                            context.fillStyle = "#98D1AD";
+                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
                             break;
+                        case "snake":
+                            context.fillStyle = "#D891A8";
+                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                            break;
+                        //For debugging
+                        case "largeBoard":
+                            context.fillStyle = "#a398d1";
+                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                            break;                            
                     }
                 }
-
             }
         }
-        
     }
     
     function displayStartGameMessage() {
