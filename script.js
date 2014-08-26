@@ -391,7 +391,7 @@
                 }
                 //..otherwise it should just create an empty tile
                 else {
-                    tempTile = new Tile(x, y, "empty");
+                    tempTile = new Tile(x, y, "largeBoard");
                 }
                 //Add the tile to the position
                 gameBoard[y][x] = tempTile;
