@@ -74,13 +74,14 @@
     }
     
     function createSnake() {
+        //Resets the snake if it already exist
         if(snake.length > 0) {
             snake = [];
         }
         
-        //Sets coordinates for the snake head relative to the board size
-        var xPos = Math.floor(BOARD_SIDE/4);    //Start a quarter from the left border
-        var yPos = Math.floor(BOARD_SIDE/2);    //Start in the middle on the y-axis    
+        //Sets coordinates for the snake head relative to the small board size    
+        var xPos = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
+        var yPos = Math.floor(SMALL_BOARD_START_YPOS + (SMALL_BOARD_END_YPOS-SMALL_BOARD_START_YPOS)/2); //Start in the middle on the y-axis    
         
         //Create a snake head
         var firstSnakeHead = new SnakeHead(xPos, yPos);
@@ -393,7 +394,7 @@
                 else {
                     tempTile = new Tile(x, y, "largeBoard");
                 }
-                //Add the tile to the position
+                //Add the tile gameBoard
                 gameBoard[y][x] = tempTile;
             }
         }
