@@ -1,5 +1,39 @@
 /*
 
+APPLES
+
+if apple doesnt exist on board
+    add apple to board;
+
+wall collision checker:
+    add check for flag="apple";
+    if apple
+        snakelength++;
+        
+        
+        
+UPDATE GAME BOARD
+
+reset all snake tiles on board()
+
+if(check snake array vs. wall collision())
+    gameOver();
+    
+if(check snake array vs. apple collision())
+    snakelength++;
+    addAppleToBoard();
+
+loop through snake array and set the corresponding tiles in gameboard array to snakeflag()
+
+
+    
+
+
+
+
+
+
+---------------------------------------------------------
 gameBoard[]
 snake[]
 

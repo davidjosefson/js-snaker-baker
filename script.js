@@ -24,11 +24,12 @@
     var BOARD_SIDE = 50;         //Number of tiles on one side of the board
     var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
     
-    var gameBoard = [];
+    var gameBoard = [[]];       //Two dimensional array
     var snake = [];
     var direction = START_DIRECTION;
     var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
+    var appleOnBoard = false;
     
     var isGameStarted = false;
     var isGameOver = false;
@@ -164,10 +165,15 @@
     }
     
     function updateGameBoard() {
+        var appleOnBoard = false;
+        
         //Reset all snake tiles in the game board array
         for(var i = 0; i < gameBoard.length; i++) {
             if(gameBoard[i].flag == "snake") {
                 gameBoard[i].flag = "empty";
+            }
+            if(gameBoard[i].flag == "apple") {
+                appleOnBoard = true;
             }
         }
         
@@ -204,14 +210,17 @@
         
         if(gameBoard.length !== 0) {
             for(var i = 0; i < gameBoard.length; i++) {
-                switch (gameBoard[i].flag) {
-                    case "snake":
-                        xPixels = gameBoard[i].xPos * TILE_PX;
-                        yPixels = BOARD_SIDE_PX - TILE_PX - gameBoard[i].yPos * TILE_PX;
-                        context.fillStyle = "#D891A8";
-                        context.fillRect(xPixels, yPixels, SNAKE_PX, SNAKE_PX);
-                        break;
+                for(var j = 0; j < gameBoard[i].length; j++){
+                    switch (gameBoard[i][j].flag) {
+                        case "snake":
+                            xPixels = gameBoard[i][j].xPos * TILE_PX;
+                            yPixels = BOARD_SIDE_PX - TILE_PX - gameBoard[i][j].yPos * TILE_PX;
+                            context.fillStyle = "#D891A8";
+                            context.fillRect(xPixels, yPixels, SNAKE_PX, SNAKE_PX);
+                            break;
+                    }
                 }
+
             }
         }
         
@@ -249,6 +258,9 @@
             }
             if(checkWallCollision(snake[0].xPos, snake[0].yPos)){
                 gameOver();   
+            }
+            if(!appleOnBoard){
+                addAppleToBoard();    
             }
             else {
                 updateGameBoard();
@@ -318,13 +330,15 @@
     function checkWallCollision(xPos, yPos) {
         var coordinatesFound = false;
         
+        if(gameBoard[xPos][yPos].flag == "empty")
+        
         //Loop through the gameboard array
-        for(var i = 0; i < gameBoard.length; i++) {
+        /*for(var i = 0; i < gameBoard.length; i++) {
             //Check if the snake coordinates equals the gameboard coordinates
             if((gameBoard[i].xPos == xPos) && gameBoard[i].yPos == yPos) {
                 coordinatesFound = true;
             }
-        }
+        }*/
         //If the snake coordinates are found, no collision
         if(coordinatesFound) {
             return false;
@@ -352,16 +366,20 @@
     
     function createGameBoard(size) {    
         if(gameBoard.length > 0) {
-            gameBoard = [];
+            gameBoard = [[]];
         }
-        
+            
         var tile;
         for(var i = 0; i < size; i++) {
             for(var j = 0; j < size; j++) {
                 tile = new Tile(j, i, "empty");
-                gameBoard.push(tile);
+                gameBoard[j][i](tile);
             }
         }
+    }
+    
+    function addAppleToBoard() {
+            
     }
 
 })();   
