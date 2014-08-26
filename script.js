@@ -1,4 +1,4 @@
-//TODO: Game over when hitting wall
+//TODO: [x]Game over when hitting wall
 //TODO: Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
 //TODO: Fix board design
 //TODO: Add nicer fonts
@@ -246,9 +246,13 @@
             if(snake.length > snakeLengthLimit) {
                 removeSnakeTail();
             }
-            
-            updateGameBoard();
-            drawGUI();
+            if(checkWallCollision(snake[0].xPos, snake[0].yPos)){
+                gameOver();   
+            }
+            else {
+                updateGameBoard();
+                drawGUI();
+            }
             
         }, SNAKESPEED);
     }
@@ -308,6 +312,26 @@
             }
         }
         return false;
+    }
+    
+    function checkWallCollision(xPos, yPos) {
+        var coordinatesFound = false;
+        
+        //Loop through the gameboard array
+        for(var i = 0; i < gameBoard.length; i++) {
+            //Check if the snake coordinates equals the gameboard coordinates
+            if((gameBoard[i].xPos == xPos) && gameBoard[i].yPos == yPos) {
+                coordinatesFound = true;
+            }
+        }
+        //If the snake coordinates are found, no collision
+        if(coordinatesFound) {
+            return false;
+        }
+        //If the snake coordinates are NOT found, collision has occured
+        else {
+            return true;
+        }
     }
     
     function removeSnakeTail() {
