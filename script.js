@@ -17,12 +17,18 @@
 /*global $:false */
 (function() {
     var START_DIRECTION = "right";
-    var SNAKE_START_LENGTH = 5;  //How long the snake is allowed to grow when starting the game
+    var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
     var SNAKESPEED = 100;
-    var TILE_PX = 7;             //Number of pixels each tile consists of
-    var SNAKE_PX = TILE_PX;      //Same as the tile size
-    var BOARD_SIDE = 50;         //Number of tiles on one side of the board
-    var BOARD_SIDE_PX = BOARD_SIDE*TILE_PX;
+    var TILE_PX = 7;                //Number of pixels each tile consists of
+    var SNAKE_PX = TILE_PX;         //Same as the tile size
+    
+    var LARGE_BOARD_SIDE = 100;    //Number of tiles on one side of the large hidden board (surrounding the small starting board)
+    var LARGE_BOARD_SIDE_PX = LARGE_BOARD_SIDE*TILE_PX;
+    
+    var SMALL_BOARD_START_XPOS = 25;      //X-coordinate where the small board should start
+    var SMALL_BOARD_START_YPOS = 25;      //Y-coordinate where the small board should start
+    var SMALL_BOARD_END_XPOS = 50;      //X-coordinate where the small board should start
+    var SMALL_BOARD_END_YPOS = 50;      //Y-coordinate where the small board should start
     
     var gameBoard = [[]];       //Two dimensional array
     var snake = [];
@@ -53,7 +59,7 @@
         isGameStarted = false;
         
         //Resets and creates a gameboard grid with tiles (no snakes yet)
-        createGameBoard(BOARD_SIDE);
+        createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
         
         //Add snake head to the snake array
         createSnake();
@@ -364,23 +370,34 @@
     }
     
     
-    function createGameBoard(size) {    
+    function createGameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {    
+        //If the gameboard already exists, reset it, otherwise it might just add to the existing one
         if(gameBoard.length > 0) {
-            gameBoard = [[]];
+            gameBoard = [];
         }
+        
+        var tempTile;
+        
+        //Y-coordinates
+        for(var y = 0; y < largeBoardSize; y++){
+            //Creates an array at position y in the first array
+            gameBoard[y] = [];
             
-        var tile;
-        for(var i = 0; i < size; i++) {
-            for(var j = 0; j < size; j++) {
-                tile = new Tile(j, i, "empty");
-                gameBoard[j][i](tile);
+            //X-coordinates
+            for(var x = 0; x < largeBoardSize; x++) {
+                //Creates a smallBoard-tile if the coordinates matches the small board parameters
+                if((x >= smallBoardStartX) && (x <= smallBoardEndX) && (y >= smallBoardStartY) && (y <= smallBoardEndY)) {    
+                    tempTile = new Tile(x, y, "smallBoard");
+                }
+                //..otherwise it should just create an empty tile
+                else {
+                    tempTile = new Tile(x, y, "empty");
+                }
+                //Add the tile to the position
+                gameBoard[y][x] = tempTile;
             }
         }
-    }
-    
-    function addAppleToBoard() {
-            
-    }
+    }   
 
 })();   
 
