@@ -174,27 +174,25 @@
     function updateGameBoard() {
         var appleOnBoard = false;
         
-        //Reset all snake tiles in the game board array
-        for(var i = 0; i < gameBoard.length; i++) {
-            if(gameBoard[i].flag == "snake") {
-                gameBoard[i].flag = "empty";
-            }
-            if(gameBoard[i].flag == "apple") {
-                appleOnBoard = true;
-            }
-        }
-        
-        //Loops through the snake array
-        for(var j = 0; j < snake.length; j++) {
-            //Loops through the game board array
-            for(var k = 0; k < gameBoard.length; k++){
-                //If the current snake coordinates equals those of the game board tile,
-                //set the current game board tile flag to "snake"
-                if((snake[j].xPos == gameBoard[k].xPos) && (snake[j].yPos == gameBoard[k].yPos)) {
-                    gameBoard[k].flag = "snake";
+        //Loop through the game board and reset all snake flags
+        for(var i = 0; i < gameBoard[i].length; i++) {
+            for(var j = 0; j < gameBoard[i][j].length; j++){
+                if(gameBoard[i][j].flag == "snake") {
+                    gameBoard[i][j].flag = "empty";
+                }
+                if(gameBoard[i][j].flag == "apple") {
+                    appleOnBoard = true;
                 }
             }
         }
+        
+        //Loops through the snake array and uses the x/y-coordinates 
+        //to change the corresponding tile flags on the gameBoard to "snake"
+        for(var k = 0; k < snake.length; k++) {
+            gameBoard[snake[k].xPos][snake[k].yPos].flag = "snake";
+        }
+        
+        
     }
     
     function drawGUI() {
@@ -379,23 +377,23 @@
         
         var tempTile;
         
-        //Y-coordinates
-        for(var y = 0; y < largeBoardSize; y++){
+        //X-coordinates
+        for(var x = 0; x < largeBoardSize; x++){
             //Creates an array at position y in the first array
-            gameBoard[y] = [];
+            gameBoard[x] = [];
             
-            //X-coordinates
-            for(var x = 0; x < largeBoardSize; x++) {
+            //Y-coordinates
+            for(var y = 0; y < largeBoardSize; y++) {
                 //Creates a smallBoard-tile if the coordinates matches the small board parameters
                 if((x >= smallBoardStartX) && (x <= smallBoardEndX) && (y >= smallBoardStartY) && (y <= smallBoardEndY)) {    
                     tempTile = new Tile(x, y, "smallBoard");
                 }
-                //..otherwise it should just create an empty tile
+                //..otherwise it should create a largeBoard-tile
                 else {
                     tempTile = new Tile(x, y, "largeBoard");
                 }
                 //Add the tile gameBoard
-                gameBoard[y][x] = tempTile;
+                gameBoard[x][y] = tempTile;
             }
         }
     }   
