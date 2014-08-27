@@ -20,7 +20,6 @@
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
     var SNAKESPEED = 100;
     var TILE_PX = 7;                //Number of pixels each tile consists of
-    var SNAKE_PX = TILE_PX;         //Same as the tile size
     
     var LARGE_BOARD_SIDE = 75;    //Number of tiles on one side of the large hidden board (surrounding the small starting board)
     var LARGE_BOARD_SIDE_PX = LARGE_BOARD_SIDE*TILE_PX;
@@ -30,7 +29,7 @@
     var SMALL_BOARD_END_XPOS = 60;      //X-coordinate where the small board should start
     var SMALL_BOARD_END_YPOS = 65;      //Y-coordinate where the small board should start
     
-    var gameBoard = [[]];       //Two dimensional array
+    var gameBoard;
     var snake = [];
     var direction = START_DIRECTION;
     var snakeLengthLimit = SNAKE_START_LENGTH;
@@ -39,8 +38,6 @@
     var isGameStarted = false;
     var isGameOver = false;
     var isPaused = true;
-    
-    var testBoard;
     
     $(document).ready(function(){
         initializeGame();
@@ -61,13 +58,13 @@
         
         //Resets and creates a gameboard grid with tiles (no snakes yet)
         //createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
-        testBoard = new GameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
+        gameBoard = new GameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
         
         //Add snake head to the snake array
         createSnake();
         
         //Add apple to game board
-        testBoard.addRandomApple("apple");
+        gameBoard.addRandomApple("apple");
         
         //Reads the snake array and updates the gameboard grid
         updateGameBoard();
@@ -178,29 +175,12 @@
     
     function updateGameBoard() {
         //Loop through the game board and reset all snake flags
-        testBoard.resetTiles("snake", "smallBoard");
+        gameBoard.resetTiles("snake", "smallBoard");
         
         //Check the snake array and set the corresponding board tile flags to "snake"
-        testBoard.syncSnakeArrayWithBoard();
+        gameBoard.syncSnakeArrayWithBoard();
     }
-    
-    /*function addApple(){
-        var randomXpos;
-        var randomYpos;
-        var emptyTileFound = false;
         
-        while(!emptyTileFound){
-            randomXpos = getRandomInt(0, LARGE_BOARD_SIDE);
-            randomYpos = getRandomInt(0, LARGE_BOARD_SIDE);
-            
-            if(gameBoard[randomXpos][randomYpos].flag == "smallBoard"){
-                emptyTileFound = true;
-            }
-        }
-        
-        gameBoard[randomXpos][randomYpos].flag = "apple";
-    }*/
-    
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
@@ -217,46 +197,14 @@
         var xPixels;
         var yPixels;
         
-        /*if(gameBoard.length !== 0) {
-            //Loops through every tile of the gameBoard
-            for(var i = 0; i < gameBoard.length; i++) {
-                for(var j = 0; j < gameBoard[i].length; j++){
-                    //Set startpixels
-                    xPixels = gameBoard[i][j].xPos * TILE_PX;
-                    yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - gameBoard[i][j].yPos * TILE_PX;                    
-                    
-                    //Different colors for different types of tiles
-                    switch (gameBoard[i][j].flag) {
-                        case "smallBoard":
-                            context.fillStyle = "#98D1AD";
-                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
-                            break;
-                        case "snake":
-                            context.fillStyle = "#D891A8";
-                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
-                            break;
-                        case "apple":
-                            context.fillStyle = "#eaff00";
-                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
-                            break;                            
-                        //For debugging
-                        case "largeBoard":
-                            context.fillStyle = "#a398d1";
-                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
-                            break;                            
-                    }
-                }
-            }
-        }*/
-        
-        for(var i = 0; i < testBoard.boardSize("y"); i++) {
-            for(var j = 0; j < testBoard.boardSize("x"); j++){
+        for(var i = 0; i < gameBoard.boardSize("y"); i++) {
+            for(var j = 0; j < gameBoard.boardSize("x"); j++){
                 //Set startpixels
                 xPixels = i * TILE_PX;
                 yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - j * TILE_PX;                    
 
                 //Different colors for different types of tiles 
-                switch (testBoard.checkTileFlag(i, j)) {
+                switch (gameBoard.checkTileFlag(i, j)) {
                     case "smallBoard":
                         context.fillStyle = "#98D1AD";
                         context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
@@ -359,14 +307,14 @@
     }
     
     function checkCollision() {
-        switch (testBoard.checkTileFlag(snake[0].xPos, snake[0].yPos)){
+        switch (gameBoard.checkTileFlag(snake[0].xPos, snake[0].yPos)){
             case "largeBoard":
             case "snake":
                 gameOver();   
                 break;
             case "apple":
                 snakeLengthLimit++;
-                testBoard.addRandomApple("apple");
+                gameBoard.addRandomApple("apple");
                 break;
         }   
     }
@@ -385,47 +333,16 @@
         snake.unshift(snakeHead);
     }
     
-    
-    /*function createGameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {    
-        //If the gameboard already exists, reset it, otherwise it might just add to the existing one
-        if(gameBoard.length > 0) {
-            gameBoard = [];
-        }
-        
-        var tempTile;
-        
-        //X-coordinates
-        for(var x = 0; x < largeBoardSize; x++){
-            //Creates an array at position y in the first array
-            gameBoard[x] = [];
-            
-            //Y-coordinates
-            for(var y = 0; y < largeBoardSize; y++) {
-                //Creates a smallBoard-tile if the coordinates matches the small board parameters
-                if((x >= smallBoardStartX) && (x <= smallBoardEndX) && (y >= smallBoardStartY) && (y <= smallBoardEndY)) {    
-                    tempTile = new Tile(x, y, "smallBoard");
-                }
-                //..otherwise it should create a largeBoard-tile
-                else {
-                    tempTile = new Tile(x, y, "largeBoard");
-                }
-                //Add the tile gameBoard
-                gameBoard[x][y] = tempTile;
-            }
-        }
-    }*/
-    
     function GameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {
         var boardArray = [];
         var appleExist = false;
         
         // - CREATE THE BOARD -\\
-        var tempTile;
-        
         //X-coordinates
         for(var x = 0; x < largeBoardSize; x++){
             //Creates an array at position y in the first array
             boardArray[x] = [];
+            var tempTile;            
             
             //Y-coordinates
             for(var y = 0; y < largeBoardSize; y++) {
@@ -437,7 +354,7 @@
                 else {
                     tempTile = new Tile(x, y, "largeBoard");
                 }
-                //Add the tile gameBoard
+                //Add the tile to the board array
                 boardArray[x][y] = tempTile;
             }
         }
@@ -527,5 +444,6 @@
             }
         };
     }
+    
 })();   
 
