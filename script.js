@@ -52,11 +52,11 @@
         //Set snake start length
         snakeLengthLimit = SNAKE_START_LENGTH;
         
-        //Resets constants
+        //Reset constants
         isGameOver = false;
         isGameStarted = false;
         
-        //Resets and creates a gameboard grid with tiles (no snakes yet)
+        //Reset and create a gameboard grid with tiles (no snakes yet)
         //createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
         gameBoard = new GameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
         
@@ -66,7 +66,7 @@
         //Add apple to game board
         gameBoard.addRandomApple("apple");
         
-        //Reads the snake array and updates the gameboard grid
+        //Read the snake array and updates the gameboard grid
         updateGameBoard();
     }
     
