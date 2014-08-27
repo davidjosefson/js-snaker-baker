@@ -41,6 +41,8 @@
     var isGameOver = false;
     var isPaused = true;
     
+    var testBoard;
+    
     $(document).ready(function(){
         initializeGame();
         initilizeGUI();
@@ -59,7 +61,8 @@
         isGameStarted = false;
         
         //Resets and creates a gameboard grid with tiles (no snakes yet)
-        createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
+        //createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
+        testBoard = new GameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
         
         //Add snake head to the snake array
         createSnake();
@@ -172,34 +175,19 @@
     }
     
     function updateGameBoard() {
-        var appleOnBoard = false;
-        
         //Loop through the game board and reset all snake flags
-        for(var i = 0; i < gameBoard.length; i++) {
-            for(var j = 0; j < gameBoard[i].length; j++){
-                if(gameBoard[i][j].flag == "snake") {
-                    gameBoard[i][j].flag = "smallBoard";
-                }
-                if(gameBoard[i][j].flag == "apple") {
-                    appleOnBoard = true;
-                }
-            }
+        testBoard.resetTiles("snake", "smallBoard");
+        
+        //If no apple exist on the board, add one
+        if(!testBoard.appleExist) {
+            testBoard.addRandomApple();
         }
         
-        if(!appleOnBoard){
-            addApple();
-        }
-        
-        //Loops through the snake array and uses the x/y-coordinates 
-        //to change the corresponding tile flags on the gameBoard to "snake"
-        for(var k = 0; k < snake.length; k++) {
-            gameBoard[snake[k].xPos][snake[k].yPos].flag = "snake";
-        }
-        
-        
+        //Check the snake array and set the corresponding board tile flags to "snake"
+        testBoard.syncSnakeArrayWithBoard();
     }
     
-    function addApple(){
+    /*function addApple(){
         var randomXpos;
         var randomYpos;
         var emptyTileFound = false;
@@ -214,7 +202,7 @@
         }
         
         gameBoard[randomXpos][randomYpos].flag = "apple";
-    }
+    }*/
     
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
@@ -232,7 +220,7 @@
         var xPixels;
         var yPixels;
         
-        if(gameBoard.length !== 0) {
+        /*if(gameBoard.length !== 0) {
             //Loops through every tile of the gameBoard
             for(var i = 0; i < gameBoard.length; i++) {
                 for(var j = 0; j < gameBoard[i].length; j++){
@@ -260,6 +248,35 @@
                             context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
                             break;                            
                     }
+                }
+            }
+        }*/
+        
+        for(var i = 0; i < testBoard.boardSize("y"); i++) {
+            for(var j = 0; j < testBoard.boardSize("x"); j++){
+                //Set startpixels
+                xPixels = j * TILE_PX;
+                yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - i * TILE_PX;                    
+
+                //Different colors for different types of tiles
+                switch (testBoard.checkTileFlag(i, j)) {
+                    case "smallBoard":
+                        context.fillStyle = "#98D1AD";
+                        context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                        break;
+                    case "snake":
+                        context.fillStyle = "#D891A8";
+                        context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                        break;
+                    case "apple":
+                        context.fillStyle = "#eaff00";
+                        context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                        break;                            
+                    //For debugging
+                    case "largeBoard":
+                        context.fillStyle = "#a398d1";
+                        context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                        break;                            
                 }
             }
         }
@@ -298,13 +315,9 @@
             if(checkWallCollision(snake[0].xPos, snake[0].yPos)){
                 gameOver();   
             }
-            /*if(!appleOnBoard){
-                addAppleToBoard();    
-            }*/
-            //else {
-                updateGameBoard();
-                drawGUI();
-            //}
+
+            updateGameBoard();
+            drawGUI();
             
         }, SNAKESPEED);
     }
@@ -367,7 +380,7 @@
     }
     
     function checkWallCollision(xPos, yPos) {
-        if(gameBoard[xPos][yPos].flag == "largeBoard"){
+        if(testBoard.checkTileFlag(xPos, yPos) == "largeBoard") {
             return true;
         }
         else {
@@ -417,7 +430,119 @@
                 gameBoard[x][y] = tempTile;
             }
         }
-    }   
+    }
+    
+    function GameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {
+        var boardArray = [];
+        var appleExist = false;
+        
+        // - CREATE THE BOARD -\\
+        var tempTile;
+        
+        //X-coordinates
+        for(var x = 0; x < largeBoardSize; x++){
+            //Creates an array at position y in the first array
+            boardArray[x] = [];
+            
+            //Y-coordinates
+            for(var y = 0; y < largeBoardSize; y++) {
+                //Creates a smallBoard-tile if the coordinates matches the small board parameters
+                if((x >= smallBoardStartX) && (x <= smallBoardEndX) && (y >= smallBoardStartY) && (y <= smallBoardEndY)) {    
+                    tempTile = new Tile(x, y, "smallBoard");
+                }
+                //..otherwise it should create a largeBoard-tile
+                else {
+                    tempTile = new Tile(x, y, "largeBoard");
+                }
+                //Add the tile gameBoard
+                boardArray[x][y] = tempTile;
+            }
+        }
+        
+        //FUNCTIONS
+        //Check the flag of a certain tile
+        this.checkTileFlag = function(xPos, yPos) {
+            if(xPos < boardArray.length && yPos < boardArray[xPos].length) {
+                return boardArray[xPos][yPos].flag;
+            }
+            else {
+                return false;
+            }
+        };
+        
+        //Returns the size of the board
+        this.boardSize = function(axis) {
+            if(axis == "x") {
+                return boardArray.length;
+            }
+            else if(axis == "y") {
+                return boardArray[0].length;
+            }
+        };
+        
+        //Set a tile flag
+        this.setTileBoardFlag = function(xPos, yPos, boardType) {
+            if(boardType == "largeGameBoard" || boardType == "smallGameBoard") {
+                boardArray[xPos][yPos].flag = boardType;
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+        
+        //Adds an apple on a random "smallBoard" tile (empty tile)
+        this.addRandomApple = function(appleType) {
+            if(appleType == "apple" || appleType == "blueApple") {
+                var randomXpos;
+                var randomYpos;
+                var emptyTileFound = false;
 
+                while(!emptyTileFound){
+                    randomXpos = getRandomInt(0, LARGE_BOARD_SIDE);
+                    randomYpos = getRandomInt(0, LARGE_BOARD_SIDE);
+
+                    if(gameBoard[randomXpos][randomYpos].flag == "smallBoard"){
+                        emptyTileFound = true;
+                    }
+                }
+
+                boardArray[randomXpos][randomYpos].flag = appleType;
+                appleExist = true;
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+        
+        //Check if apple exists on the board, if so, return true
+        this.appleExist = function() {
+            if(appleExist) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+        
+        //Loop through the game board and reset all flags of a certain type
+        this.resetTiles = function(flagToReset, flagToSet) {
+            for(var i = 0; i < boardArray.length; i++) {
+                for(var j = 0; j < boardArray[i].length; j++){
+                    if(boardArray[i][j].flag == flagToReset) {
+                        boardArray[i][j].flag = flagToSet;
+                    }
+                }
+            }
+        };
+        
+        //Loop through the snake array and change the corresponding tiles on the gameboard
+        this.syncSnakeArrayWithBoard = function() {
+            for(var i = 0; i < snake.length; i++) {
+                boardArray[snake[i].xPos][snake[i].yPos].flag = "snake";
+            }
+        };
+    }
 })();   
 
