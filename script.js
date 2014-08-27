@@ -66,6 +66,9 @@
         //Add snake head to the snake array
         createSnake();
         
+        //Add apple to game board
+        testBoard.addRandomApple("apple");
+        
         //Reads the snake array and updates the gameboard grid
         updateGameBoard();
     }
@@ -177,11 +180,6 @@
         //Loop through the game board and reset all snake flags
         testBoard.resetTiles("snake", "smallBoard");
         
-        //If no apple exist on the board, add one
-        if(!testBoard.appleExist) {
-            testBoard.addRandomApple();
-        }
-        
         //Check the snake array and set the corresponding board tile flags to "snake"
         testBoard.syncSnakeArrayWithBoard();
     }
@@ -257,7 +255,7 @@
                 xPixels = i * TILE_PX;
                 yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - j * TILE_PX;                    
 
-                //Different colors for different types of tiles
+                //Different colors for different types of tiles 
                 switch (testBoard.checkTileFlag(i, j)) {
                     case "smallBoard":
                         context.fillStyle = "#98D1AD";
@@ -308,13 +306,13 @@
         
         myInterval = setInterval(function(){
             addSnakeHead(direction);
+            
             if(snake.length > snakeLengthLimit) {
                 removeSnakeTail();
             }
-            if(checkWallCollision(snake[0].xPos, snake[0].yPos)){
-                gameOver();   
-            }
-
+            
+            checkCollision();
+                        
             updateGameBoard();
             drawGUI();
             
@@ -356,35 +354,21 @@
                 yPos = currentHeadYpos - 1;
                 break;
         }
-        
-        //Check if the coordinates already exists in the snake array (if the snake has collided with itself)
-        if(checkTailCollision(xPos, yPos)) {
-            gameOver();
-        }
-        else {
-            //Adds coordinates to the snake array
-            addHeadToArray(xPos, yPos);
-        }
+
+        addHeadToArray(xPos, yPos);
     }
     
-    function checkTailCollision(xPos, yPos) {
-        if(snake.length > 0) {
-            for(var i = 0; i < snake.length; i++) {
-                if((snake[i].xPos == xPos) && (snake[i].yPos == yPos)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    function checkWallCollision(xPos, yPos) {
-        if(testBoard.checkTileFlag(xPos, yPos) == "largeBoard") {
-            return true;
-        }
-        else {
-            return false;
-        }
+    function checkCollision() {
+        switch (testBoard.checkTileFlag(snake[0].xPos, snake[0].yPos)){
+            case "largeBoard":
+            case "snake":
+                gameOver();   
+                break;
+            case "apple":
+                snakeLengthLimit++;
+                testBoard.addRandomApple("apple");
+                break;
+        }   
     }
     
     function removeSnakeTail() {
@@ -498,10 +482,10 @@
                 var emptyTileFound = false;
 
                 while(!emptyTileFound){
-                    randomXpos = getRandomInt(0, LARGE_BOARD_SIDE);
-                    randomYpos = getRandomInt(0, LARGE_BOARD_SIDE);
+                    randomXpos = getRandomInt(0, this.boardSize("x"));
+                    randomYpos = getRandomInt(0, this.boardSize("y"));
 
-                    if(gameBoard[randomXpos][randomYpos].flag == "smallBoard"){
+                    if(boardArray[randomXpos][randomYpos].flag == "smallBoard"){
                         emptyTileFound = true;
                     }
                 }
