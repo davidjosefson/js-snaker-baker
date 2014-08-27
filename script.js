@@ -186,6 +186,10 @@
             }
         }
         
+        if(!appleOnBoard){
+            addApple();
+        }
+        
         //Loops through the snake array and uses the x/y-coordinates 
         //to change the corresponding tile flags on the gameBoard to "snake"
         for(var k = 0; k < snake.length; k++) {
@@ -193,6 +197,27 @@
         }
         
         
+    }
+    
+    function addApple(){
+        var randomXpos;
+        var randomYpos;
+        var emptyTileFound = false;
+        
+        while(!emptyTileFound){
+            randomXpos = getRandomInt(0, LARGE_BOARD_SIDE);
+            randomYpos = getRandomInt(0, LARGE_BOARD_SIDE);
+            
+            if(gameBoard[randomXpos][randomYpos].flag == "smallBoard"){
+                emptyTileFound = true;
+            }
+        }
+        
+        gameBoard[randomXpos][randomYpos].flag = "apple";
+    }
+    
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
     }
     
     function drawGUI() {
@@ -225,6 +250,10 @@
                             context.fillStyle = "#D891A8";
                             context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
                             break;
+                        case "apple":
+                            context.fillStyle = "#eaff00";
+                            context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                            break;                            
                         //For debugging
                         case "largeBoard":
                             context.fillStyle = "#a398d1";
