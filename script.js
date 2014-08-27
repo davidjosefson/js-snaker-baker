@@ -35,7 +35,6 @@
     var direction = START_DIRECTION;
     var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
-    var appleOnBoard = false;
     
     var isGameStarted = false;
     var isGameOver = false;
@@ -255,8 +254,8 @@
         for(var i = 0; i < testBoard.boardSize("y"); i++) {
             for(var j = 0; j < testBoard.boardSize("x"); j++){
                 //Set startpixels
-                xPixels = j * TILE_PX;
-                yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - i * TILE_PX;                    
+                xPixels = i * TILE_PX;
+                yPixels = LARGE_BOARD_SIDE_PX - TILE_PX - j * TILE_PX;                    
 
                 //Different colors for different types of tiles
                 switch (testBoard.checkTileFlag(i, j)) {
@@ -403,7 +402,7 @@
     }
     
     
-    function createGameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {    
+    /*function createGameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {    
         //If the gameboard already exists, reset it, otherwise it might just add to the existing one
         if(gameBoard.length > 0) {
             gameBoard = [];
@@ -430,7 +429,7 @@
                 gameBoard[x][y] = tempTile;
             }
         }
-    }
+    }*/
     
     function GameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {
         var boardArray = [];
