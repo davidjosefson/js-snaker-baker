@@ -34,6 +34,7 @@
     var direction = START_DIRECTION;
     var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
+    var appleCounter = 0;
     
     var isGameStarted = false;
     var isGameOver = false;
@@ -216,6 +217,10 @@
                     case "apple":
                         context.fillStyle = "#eaff00";
                         context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
+                        break;
+                    case "blueApple":
+                        context.fillStyle = "#6e7ad3";
+                        context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
                         break;                            
                     //For debugging
                     case "largeBoard":
@@ -313,9 +318,39 @@
                 gameOver();   
                 break;
             case "apple":
+                //The snake should grow
                 snakeLengthLimit++;
-                gameBoard.addRandomApple("apple");
+                
+                //Adds new apple (every 5th apple should be blue)
+                if(appleCounter % 2 === 0) {
+                    gameBoard.addRandomApple("blueApple");    
+                }
+                else {
+                    gameBoard.addRandomApple("apple");
+                }
+                
+                //Adds one to the apple counter
+                appleCounter++;
                 break;
+            case "blueApple":
+                //The snake should grow
+                snakeLengthLimit++;
+                
+                //Adds new apple (every 5th apple should be blue)
+                if(appleCounter % 2 === 0) {
+                    gameBoard.addRandomApple("blueApple");    
+                }
+                else {
+                    gameBoard.addRandomApple("apple");
+                }
+                
+                //Adds one to the apple counter
+                appleCounter++;
+                
+                //ADD CODE TO LET THE SNAKE GO THROUGH THE WALL FOR A NUMBER OF SECONDS!
+                
+                break;
+                
         }   
     }
     
