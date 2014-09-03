@@ -1,5 +1,4 @@
-//TODO: Add random "apples" on the board
-//TODO: [x]Game over when hitting wall
+//TODO: Make the "walls" disappear on the smallBoard, and let the snake create new paths for some number of seconds. CheckCollision()-function -> "blueApple"-case.
 //TODO: Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
 //TODO: Fix board design
 //TODO: Add nicer fonts
@@ -12,6 +11,8 @@
 //TODO: [x] After game over, the pause-function doesn't work - it seems to rerun the space-press (or just the switch-case). Next game over the pause works fine.. Investigate.
 //TODO: [x]Make the snake tail disappear
 //TODO: [x]Create some kind of Game over view
+//TODO: [x]Add random "apples" on the board
+//TODO: [x]Game over when hitting wall
 
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
 /*global $:false */
@@ -337,12 +338,7 @@
                 snakeLengthLimit++;
                 
                 //Adds new apple (every 5th apple should be blue)
-                if(appleCounter % 2 === 0) {
-                    gameBoard.addRandomApple("blueApple");    
-                }
-                else {
-                    gameBoard.addRandomApple("apple");
-                }
+                gameBoard.addRandomApple("apple");
                 
                 //Adds one to the apple counter
                 appleCounter++;
