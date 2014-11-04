@@ -1,5 +1,5 @@
 //TODO: Make the "walls" disappear on the smallBoard, and let the snake create new paths for some number of seconds. CheckCollision()-function -> "blueApple"-case.
-//TODO: Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
+//TODO: [x]Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
 //TODO: Fix board design
 //TODO: Add nicer fonts
 //TODO: Fix start game message design
@@ -40,6 +40,9 @@
     var isGameStarted = false;
     var isGameOver = false;
     var isPaused = true;
+    
+    //To fix a bug where the user is to fast when switching directions, that the snake goes backwards into itself
+    var prevDirection;  
     
     $(document).ready(function(){
         initializeGame();
@@ -116,27 +119,27 @@
                 switch(key.which) {
                     //LEFT
                     case 37: 
-                        if((direction != "right") && (direction != "left")){
+                        if(!directionOnXAxis()) {
                             direction = "left";
                         }
                         break;
 
                     //UP
                     case 38:
-                        if((direction != "down") && (direction != "up")){
+                        if(!directionOnYAxis()) {
                             direction = "up";
                         }
                         break;                
 
                     //RIGHT
                     case 39: 
-                        if((direction != "right") && (direction != "left")){
+                        if(!directionOnYAxis()) {
                             direction = "right";
                         }
                         break;
                     //DOWN
                     case 40:
-                        if((direction != "down") && (direction != "up")) {
+                        if(!directionOnYAxis()) {
                             direction = "down";
                         }
                         break;
@@ -161,6 +164,16 @@
             }
         });
     }
+    
+    //Checks if the snake moving on the X-axis now and previously (to fix a bug where it was able to descend into itself and die)
+    function directionOnXAxis() {
+        return (direction != "right") && (direction != "left") && (prevDirection != "right") && (prevDirection != "left");
+    } 
+    
+    //Checks if the snake moving on the Y-axis now and previously (to fix a bug where it was able to descend into itself and die)
+    function directionOnYAxis() {
+        return (direction != "up") && (direction != "down") && (prevDirection != "up") && (prevDirection != "down");
+    } 
     
     //SNAKEHEAD OBJECT CONSTRUCTOR
     function SnakeHead(xPos, yPos) {
@@ -269,6 +282,8 @@
                         
             updateGameBoard();
             drawGUI();
+            
+            prevDirection = direction;
             
         }, SNAKESPEED);
     }
