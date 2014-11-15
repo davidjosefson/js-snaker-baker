@@ -36,6 +36,8 @@
     var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
     var appleCounter = 0;
+    var wallsGone = false;
+    var wallsGoneCounter = 0;
     
     var isGameStarted = false;
     var isGameOver = false;
@@ -272,6 +274,10 @@
         clearInterval(myInterval);
         
         myInterval = setInterval(function(){
+            if(wallsGone){
+                
+            }
+            
             addSnakeHead(direction);
             
             if(snake.length > snakeLengthLimit) {
@@ -330,6 +336,10 @@
     function checkCollision() {
         switch (gameBoard.checkTileFlag(snake[0].xPos, snake[0].yPos)){
             case "largeBoard":
+                if(!wallsGone) {
+                    gameOver();    
+                }
+                break;
             case "snake":
                 gameOver();   
                 break;
@@ -359,6 +369,7 @@
                 appleCounter++;
                 
                 //ADD CODE TO LET THE SNAKE GO THROUGH THE WALL FOR A NUMBER OF SECONDS!
+                wallsGone = true;
                 
                 break;
                 
