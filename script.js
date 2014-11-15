@@ -484,11 +484,11 @@
         };
         
         //Loop through the game board and reset all flags of a certain type
-        this.resetTiles = function(flagToReset, flagToSet) {
+        this.resetTiles = function(flagToReset, flagType) {
             for(var i = 0; i < boardArray.length; i++) {
                 for(var j = 0; j < boardArray[i].length; j++){
                     if(boardArray[i][j].flag == flagToReset) {
-                        boardArray[i][j].flag = flagToSet;
+                        boardArray[i][j].flag = flagType;
                     }
                 }
             }
