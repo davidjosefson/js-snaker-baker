@@ -193,7 +193,7 @@
         gameBoard.resetTiles("snake", "smallBoard");
         
         //Check the snake array and set the corresponding board tile flags to "snake"
-        gameBoard.syncSnakeArrayWithBoard();
+        gameBoard.syncBoardWithSnakeArray();
     }
         
     function getRandomInt(min, max) {
@@ -484,7 +484,7 @@
         };
         
         //Loop through the snake array and change the corresponding tiles on the gameboard
-        this.syncSnakeArrayWithBoard = function() {
+        this.syncBoardWithSnakeArray = function() {
             for(var i = 0; i < snake.length; i++) {
                 boardArray[snake[i].xPos][snake[i].yPos].flag = "snake";
             }
