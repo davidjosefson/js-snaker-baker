@@ -29,6 +29,7 @@
     var SMALL_BOARD_START_YPOS = 35;      //Y-coordinate where the small board should start
     var SMALL_BOARD_END_XPOS = 60;      //X-coordinate where the small board should start
     var SMALL_BOARD_END_YPOS = 65;      //Y-coordinate where the small board should start
+    var LENGTH_OF_WALLS_GONE = 100;
     
     var gameBoard;
     var snake = [];
@@ -62,6 +63,7 @@
         //Reset constants
         isGameOver = false;
         isGameStarted = false;
+        wallsGone = false;
         
         //Reset and create a gameboard grid with tiles (no snakes yet)
         //createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
@@ -191,10 +193,10 @@
     }
     
     function updateGameBoard() {
-        //Loop through the game board and reset all snake flags
+        //Reset current snake tiles on the board
         gameBoard.resetTiles("snake", "smallBoard");
         
-        //Check the snake array and set the corresponding board tile flags to "snake"
+        //Set the new snake tiles from the snake array
         gameBoard.syncBoardWithSnakeArray();
     }
         
@@ -274,9 +276,11 @@
         clearInterval(myInterval);
         
         myInterval = setInterval(function(){
-            if(wallsGone){
-                
-            }
+            if(wallsGone)
+                wallsGoneCounter++;
+            
+            if(wallsGoneCounter >= LENGTH_OF_WALLS_GONE)
+                wallsGone = false;
             
             addSnakeHead(direction);
             
