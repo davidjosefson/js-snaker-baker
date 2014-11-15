@@ -42,7 +42,7 @@
     var isPaused = true;
     
     //To fix a bug where the user is to fast when switching directions, that the snake goes backwards into itself
-    var prevDirection;  
+    var prevDirection = START_DIRECTION;  
     
     $(document).ready(function(){
         initializeGame();
@@ -133,7 +133,7 @@
 
                     //RIGHT
                     case 39: 
-                        if(!directionOnYAxis()) {
+                        if(!directionOnXAxis()) {
                             direction = "right";
                         }
                         break;
@@ -167,12 +167,12 @@
     
     //Checks if the snake moving on the X-axis now and previously (to fix a bug where it was able to descend into itself and die)
     function directionOnXAxis() {
-        return (direction != "right") && (direction != "left") && (prevDirection != "right") && (prevDirection != "left");
+        return ((direction == "right") || (direction == "left") || (prevDirection == "right") || (prevDirection == "left"));
     } 
     
     //Checks if the snake moving on the Y-axis now and previously (to fix a bug where it was able to descend into itself and die)
     function directionOnYAxis() {
-        return (direction != "up") && (direction != "down") && (prevDirection != "up") && (prevDirection != "down");
+        return ((direction == "up") || (direction == "down") || (prevDirection == "up") || (prevDirection == "down"));
     } 
     
     //SNAKEHEAD OBJECT CONSTRUCTOR
