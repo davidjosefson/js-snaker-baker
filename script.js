@@ -207,6 +207,7 @@
     function drawGUI() {
         var canvas = document.getElementById('snakeBoard');
         var context = canvas.getContext("2d");
+        var snakeColor = "#D891A8";
         
         //Set the canvas to the same size as the board
         canvas.height = LARGE_BOARD_SIDE_PX;
@@ -215,6 +216,17 @@
         //Draw the tiles
         var xPixels;
         var yPixels;
+        
+        if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.2)
+            snakeColor = "#0bf741";
+        else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.4)
+            snakeColor = "#8bfc07";
+        else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.6)
+            snakeColor = "#e9fc07";
+        else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.8)
+            snakeColor = "#fc9e07";
+        else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.9)
+            snakeColor = "#fc3607";
         
         for(var i = 0; i < gameBoard.boardSize("y"); i++) {
             for(var j = 0; j < gameBoard.boardSize("x"); j++){
@@ -229,7 +241,7 @@
                         context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
                         break;
                     case "snake":
-                        context.fillStyle = "#D891A8";
+                        context.fillStyle = snakeColor;
                         context.fillRect(xPixels, yPixels, TILE_PX, TILE_PX);
                         break;
                     case "apple":
@@ -248,6 +260,9 @@
                 }
             }
         }
+        
+        
+                
     }
     
     function displayStartGameMessage() {
@@ -279,8 +294,10 @@
             if(wallsGone)
                 wallsGoneCounter++;
             
-            if(wallsGoneCounter >= LENGTH_OF_WALLS_GONE)
+            if(wallsGoneCounter >= LENGTH_OF_WALLS_GONE) {
                 wallsGone = false;
+                wallsGoneCounter = 0;
+            }
             
             addSnakeHead(direction);
             
