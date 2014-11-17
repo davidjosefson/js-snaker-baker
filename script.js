@@ -29,7 +29,7 @@
     var SMALL_BOARD_START_YPOS = 35;      //Y-coordinate where the small board should start
     var SMALL_BOARD_END_XPOS = 60;      //X-coordinate where the small board should start
     var SMALL_BOARD_END_YPOS = 65;      //Y-coordinate where the small board should start
-    var LENGTH_OF_WALLS_GONE = 100;
+    var LENGTH_OF_WALLS_GONE = 50;
     
     var gameBoard;
     var snake = [];
@@ -207,7 +207,7 @@
     function drawGUI() {
         var canvas = document.getElementById('snakeBoard');
         var context = canvas.getContext("2d");
-        var snakeColor = "#D891A8";
+        var snakeColor;
         
         //Set the canvas to the same size as the board
         canvas.height = LARGE_BOARD_SIDE_PX;
@@ -217,7 +217,9 @@
         var xPixels;
         var yPixels;
         
-        if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.2)
+        if(wallsGoneCounter === 0)
+            snakeColor = "#D891A8";
+        else if(wallsGoneCounter > 0 && wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.4)
             snakeColor = "#0bf741";
         else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.4)
             snakeColor = "#8bfc07";
@@ -225,8 +227,11 @@
             snakeColor = "#e9fc07";
         else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.8)
             snakeColor = "#fc9e07";
-        else if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.9)
+        else// if(wallsGoneCounter < LENGTH_OF_WALLS_GONE*0.9)
             snakeColor = "#fc3607";
+        
+        if(isGameOver)
+            snakeColor = "#000000";
         
         for(var i = 0; i < gameBoard.boardSize("y"); i++) {
             for(var j = 0; j < gameBoard.boardSize("x"); j++){
@@ -291,14 +296,6 @@
         clearInterval(myInterval);
         
         myInterval = setInterval(function(){
-            if(wallsGone)
-                wallsGoneCounter++;
-            
-            if(wallsGoneCounter >= LENGTH_OF_WALLS_GONE) {
-                wallsGone = false;
-                wallsGoneCounter = 0;
-            }
-            
             addSnakeHead(direction);
             
             if(snake.length > snakeLengthLimit) {
@@ -307,6 +304,14 @@
             
             checkCollision();
                         
+            if(wallsGone)
+                wallsGoneCounter++;
+            
+            if(wallsGoneCounter >= LENGTH_OF_WALLS_GONE) {
+                wallsGone = false;
+                wallsGoneCounter = 0;
+            }
+            
             updateGameBoard();
             drawGUI();
             
