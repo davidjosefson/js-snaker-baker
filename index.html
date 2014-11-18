@@ -6,14 +6,15 @@
         <meta charset="UTF-8">
         
         <link type="text/css" rel="stylesheet" href="style.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
         <script src="script.js"></script>
     </head>
     
     <body>
-        <div id="board">
-            <div id="snake"></div>
-        </div>
-        
+        <div id="canvas-wrap">
+            <canvas id="snakeBoard" width="800" height="800"></canvas>
+            <div id="startGameMessage">Press ENTER to start the game...</div>
+            <div id="gameOverMessage">Game over, press ENTER to continue...</div>
+        </div>        
     </body>    
 </html>
