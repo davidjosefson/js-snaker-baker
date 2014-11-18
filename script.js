@@ -19,8 +19,10 @@
 //TODO: [x]Add random "apples" on the board
 //TODO: [x]Game over when hitting wall
 
-/*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false */
+/*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false, curly: false */
 /*global $:false */
+
+
 (function() {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
@@ -91,9 +93,8 @@
     
     function createSnake() {
         //Resets the snake if it already exist
-        if(snake.length > 0) {
+        if(snake.length > 0) 
             snake = [];
-        }
         
         //Sets coordinates for the snake head relative to the small board size    
         var xPos = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
@@ -128,23 +129,20 @@
                 switch(key.which) {
                     //LEFT
                     case 37: 
-                        if(!directionOnXAxis()) {
+                        if(!directionOnXAxis()) 
                             direction = "left";
-                        }
                         break;
 
                     //UP
                     case 38:
-                        if(!directionOnYAxis()) {
+                        if(!directionOnYAxis()) 
                             direction = "up";
-                        }
                         break;                
 
                     //RIGHT
                     case 39: 
-                        if(!directionOnXAxis()) {
+                        if(!directionOnXAxis()) 
                             direction = "right";
-                        }
                         break;
                     //DOWN
                     case 40:
@@ -154,12 +152,10 @@
                         break;
                     //SPACE
                     case 32:
-                        if(isPaused){
+                        if(isPaused)
                             moveSnake();
-                        }
-                        else {
+                        else 
                             pauseSnake();
-                        }
                         break;
                     //A
                     case 65:
@@ -300,9 +296,9 @@
         myInterval = setInterval(function(){
             addSnakeHead(direction);
             
-            if(snake.length > snakeLengthLimit) {
+            if(snake.length > snakeLengthLimit) 
                 removeSnakeTail();
-            }
+            
             
             checkCollision();
                         
@@ -364,9 +360,8 @@
     function checkCollision() {
         switch (gameBoard.checkTileFlag(snake[0].xPos, snake[0].yPos)){
             case "largeBoard":
-                if(!wallsGone) {
+                if(!wallsGone) 
                     gameOver();    
-                }
                 break;
             case "snake":
                 gameOver();   
@@ -376,12 +371,12 @@
                 snakeLengthLimit++;
                 
                 //Adds new apple (every 5th apple should be blue)
-                if(appleCounter % 2 === 0) {
+                if(appleCounter % 2 === 0) 
                     gameBoard.addRandomApple("blueApple");    
-                }
-                else {
+                
+                else 
                     gameBoard.addRandomApple("apple");
-                }
+                
                 
                 //Adds one to the apple counter
                 appleCounter++;
@@ -432,13 +427,13 @@
             //Y-coordinates
             for(var y = 0; y < largeBoardSize; y++) {
                 //Creates a smallBoard-tile if the coordinates matches the small board parameters
-                if((x >= smallBoardStartX) && (x <= smallBoardEndX) && (y >= smallBoardStartY) && (y <= smallBoardEndY)) {    
+                if((x >= smallBoardStartX) && (x <= smallBoardEndX) && (y >= smallBoardStartY) && (y <= smallBoardEndY)) 
                     tempTile = new Tile(x, y, "smallBoard");
-                }
+                
                 //..otherwise it should create a largeBoard-tile
-                else {
+                else 
                     tempTile = new Tile(x, y, "largeBoard");
-                }
+                
                 //Add the tile to the board array
                 boardArray[x][y] = tempTile;
             }
@@ -447,22 +442,21 @@
         //FUNCTIONS
         //Check the flag of a certain tile
         this.checkTileFlag = function(xPos, yPos) {
-            if(xPos < boardArray.length && yPos < boardArray[xPos].length) {
+            if(xPos < boardArray.length && yPos < boardArray[xPos].length) 
                 return boardArray[xPos][yPos].flag;
-            }
-            else {
+            else 
                 return false;
-            }
+            
         };
         
         //Returns the size of the board
         this.boardSize = function(axis) {
-            if(axis == "x") {
+            if(axis == "x") 
                 return boardArray.length;
-            }
-            else if(axis == "y") {
+            
+            else if(axis == "y") 
                 return boardArray[0].length;
-            }
+            
         };
         
         //Set a tile flag
@@ -471,9 +465,9 @@
                 boardArray[xPos][yPos].flag = boardType;
                 return true;
             }
-            else {
+            else 
                 return false;
-            }
+            
         };
         
         //Adds an apple on a random "smallBoard" tile (empty tile)
@@ -487,28 +481,24 @@
                     randomXpos = getRandomInt(0, this.boardSize("x"));
                     randomYpos = getRandomInt(0, this.boardSize("y"));
 
-                    if(boardArray[randomXpos][randomYpos].flag == "smallBoard"){
+                    if(boardArray[randomXpos][randomYpos].flag == "smallBoard")
                         emptyTileFound = true;
-                    }
                 }
                 
                 boardArray[randomXpos][randomYpos].flag = appleType;
                 appleExist = true;
                 return true;
             }
-            else {
+            else 
                 return false;
-            }
         };
         
         //Check if apple exists on the board, if so, return true
         this.appleExist = function() {
-            if(appleExist) {
+            if(appleExist) 
                 return true;
-            }
-            else {
+            else 
                 return false;
-            }
         };
         
         //Loop through the game board and reset all flags of a certain type
@@ -524,9 +514,8 @@
         
         //Loop through the snake array and change the corresponding tiles on the gameboard
         this.syncBoardWithSnakeArray = function() {
-            for(var i = 0; i < snake.length; i++) {
+            for(var i = 0; i < snake.length; i++) 
                 boardArray[snake[i].xPos][snake[i].yPos].flag = "snake";
-            }
         };
     }
     
