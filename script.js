@@ -1,6 +1,10 @@
-//TODO: Make the "walls" disappear on the smallBoard, and let the snake create new paths for some number of seconds. CheckCollision()-function -> "blueApple"-case.
+//TODO: [x]Make the "walls" disappear on the smallBoard, and let the snake create new paths for some number of seconds. CheckCollision()-function -> "blueApple"-case.
 //TODO: [x]Fix the issue when pressing two keys too fast so that the snake doesn't continue backwards on the same axis. Maybe add a funtion to check so that one head is always drawn before letting the direction change again. Only let the direction change once every cycle! Or maybe register two directional changes, but draw one head and then change the direction (so you can do quick moves)!
+//TODO: Fix what happens when reaching the end of the big board
+//TODO: Fix that eating two blue apples will reset the wallsGoneCounter, now it won't prolong the wallsGone-mode
 //TODO: Fix board design
+//TODO: Add a photobackground on the big board with a white box on top which will be set to transparent when the snake moves over it
+//TODO: Add a Cage-head which will be randomly placed on the big board and coordinates to one of the eyes
 //TODO: Add nicer fonts
 //TODO: Fix start game message design
 //TODO: Fix game over message design
@@ -19,7 +23,7 @@
 (function() {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
-    var SNAKESPEED = 100;
+    var SNAKESPEED = 50;
     var TILE_PX = 7;                //Number of pixels each tile consists of
     
     var LARGE_BOARD_SIDE = 75;    //Number of tiles on one side of the large hidden board (surrounding the small starting board)
@@ -29,7 +33,7 @@
     var SMALL_BOARD_START_YPOS = 35;      //Y-coordinate where the small board should start
     var SMALL_BOARD_END_XPOS = 60;      //X-coordinate where the small board should start
     var SMALL_BOARD_END_YPOS = 65;      //Y-coordinate where the small board should start
-    var LENGTH_OF_WALLS_GONE = 50;
+    var LENGTH_OF_WALLS_GONE = 150;
     
     var gameBoard;
     var snake = [];
@@ -265,9 +269,6 @@
                 }
             }
         }
-        
-        
-                
     }
     
     function displayStartGameMessage() {
