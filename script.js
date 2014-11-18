@@ -8,6 +8,7 @@
 //TODO: Add nicer fonts
 //TODO: Fix start game message design
 //TODO: Fix game over message design
+//TODO: Problem: an apple can appear on the new paths (big board). Solution: add countdown for apples and respawn them in another place!
 //TODO: [x]Make the snake move!
 //TODO: [x]Game over when hitting tail
 //TODO: [x]När man ändrar direction så ska den ta bort den nya intervallen och skapa en ny
