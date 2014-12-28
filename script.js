@@ -67,10 +67,11 @@
         //Set snake start length
         snakeLengthLimit = SNAKE_START_LENGTH;
         
-        //Reset constants
+        //Reset constants and snake
         isGameOver = false;
         isGameStarted = false;
         wallsGone = false;
+        snake = [];
         
         //Reset and create a gameboard grid with tiles (no snakes yet)
         //createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
@@ -92,18 +93,12 @@
     }
     
     function createSnake() {
-        //Resets the snake if it already exist
-        if(snake.length > 0) 
-            snake = [];
-        
         //Sets coordinates for the snake head relative to the small board size    
         var xPos = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
         var yPos = Math.floor(SMALL_BOARD_START_YPOS + (SMALL_BOARD_END_YPOS-SMALL_BOARD_START_YPOS)/2); //Start in the middle on the y-axis    
         
-        //Create a snake head
+        //Create a snake head and add to the snake array
         var firstSnakeHead = new SnakeHead(xPos, yPos);
-        
-        //Add that snake head to the snake array
         snake.push(firstSnakeHead);
     }
     
