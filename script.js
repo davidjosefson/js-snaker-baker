@@ -94,11 +94,11 @@
     
     function createSnake() {
         //Sets coordinates for the snake head relative to the small board size    
-        var xPos = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
-        var yPos = Math.floor(SMALL_BOARD_START_YPOS + (SMALL_BOARD_END_YPOS-SMALL_BOARD_START_YPOS)/2); //Start in the middle on the y-axis    
+        var xPosSnakeHead = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
+        var yPosSnakeHead = Math.floor(SMALL_BOARD_START_YPOS + (SMALL_BOARD_END_YPOS-SMALL_BOARD_START_YPOS)/2); //Start in the middle on the y-axis    
         
         //Create a snake head and add to the snake array
-        var firstSnakeHead = new SnakeHead(xPos, yPos);
+        var firstSnakeHead = new SnakeHead(xPosSnakeHead, yPosSnakeHead);
         snake.push(firstSnakeHead);
     }
     
