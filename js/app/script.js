@@ -23,7 +23,8 @@
 /*global $:false */
 
 
-(function() {
+define(["jquery"], function($) {
+//    (function() {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
     var SNAKESPEED = 50;
@@ -514,5 +515,5 @@
         };
     }
     
-})();   
+});   
 
