@@ -129,24 +129,24 @@
                 switch(key.which) {
                     //LEFT
                     case 37: 
-                        if(!directionOnXAxis()) 
+                        if(!snakeDirectionOnXAxis()) 
                             direction = "left";
                         break;
 
                     //UP
                     case 38:
-                        if(!directionOnYAxis()) 
+                        if(!snakeDirectionOnYAxis()) 
                             direction = "up";
                         break;                
 
                     //RIGHT
                     case 39: 
-                        if(!directionOnXAxis()) 
+                        if(!snakeDirectionOnXAxis()) 
                             direction = "right";
                         break;
                     //DOWN
                     case 40:
-                        if(!directionOnYAxis()) {
+                        if(!snakeDirectionOnYAxis()) {
                             direction = "down";
                         }
                         break;
@@ -171,12 +171,12 @@
     }
     
     //Checks if the snake moving on the X-axis now and previously (to fix a bug where it was able to descend into itself and die)
-    function directionOnXAxis() {
+    function snakeDirectionOnXAxis() {
         return ((direction == "right") || (direction == "left") || (prevDirection == "right") || (prevDirection == "left"));
     } 
     
     //Checks if the snake moving on the Y-axis now and previously (to fix a bug where it was able to descend into itself and die)
-    function directionOnYAxis() {
+    function snakeDirectionOnYAxis() {
         return ((direction == "up") || (direction == "down") || (prevDirection == "up") || (prevDirection == "down"));
     } 
     
