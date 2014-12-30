@@ -20,10 +20,10 @@
 //TODO: [x]Game over when hitting wall
 
 /*jslint browser: true, devel: true, plusplus: true, todo: true, jQuery:false, curly: false */
-/*global $:false */
+/*global $:false, define:false*/
 
 
-define(["jquery"], function($) {
+define(["jquery", "./snakehead"], function($, SnakeHead) {
 //    (function() {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
@@ -175,12 +175,6 @@ define(["jquery"], function($) {
     function snakeDirectionOnYAxis() {
         return ((direction == "up") || (direction == "down") || (prevDirection == "up") || (prevDirection == "down"));
     } 
-    
-    //SNAKEHEAD OBJECT CONSTRUCTOR
-    function SnakeHead(xPos, yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-    }
     
     //TILE OBJECT CONSTRUCTOR
     function Tile(xPos, yPos, flag) {
