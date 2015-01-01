@@ -23,7 +23,7 @@
 /*global $:false, define:false*/
 
 
-define(["jquery", "./snakehead"], function($, SnakeHead) {
+define(["jquery", "./snakehead", "./tile"], function($, SnakeHead, Tile) {
 //    (function() {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
@@ -177,11 +177,7 @@ define(["jquery", "./snakehead"], function($, SnakeHead) {
     } 
     
     //TILE OBJECT CONSTRUCTOR
-    function Tile(xPos, yPos, flag) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.flag = flag;
-    }
+
     
     function updateGameBoard() {
         //Reset current snake tiles on the board
