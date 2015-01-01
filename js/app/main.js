@@ -23,7 +23,7 @@
 /*global $:false, define:false*/
 
 
-define(["jquery", "./snakehead", "./tile"], function($, SnakeHead, Tile) {
+define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead, Tile, GameBoard) {
 //    (function() {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
@@ -184,13 +184,9 @@ define(["jquery", "./snakehead", "./tile"], function($, SnakeHead, Tile) {
         gameBoard.resetTiles("snake", "smallBoard");
         
         //Set the new snake tiles from the snake array
-        gameBoard.syncBoardWithSnakeArray();
+        gameBoard.syncBoardWithSnakeArray(snake);
     }
         
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
-    
     function drawGUI() {
         var canvas = document.getElementById('snakeBoard');
         var context = canvas.getContext("2d");
@@ -399,7 +395,7 @@ define(["jquery", "./snakehead", "./tile"], function($, SnakeHead, Tile) {
         snake.unshift(snakeHead);
     }
     
-    function GameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {
+    /*function GameBoard(largeBoardSize, smallBoardStartX, smallBoardStartY, smallBoardEndX, smallBoardEndY) {
         var boardArray = [];
         var appleExist = false;
         
@@ -503,7 +499,7 @@ define(["jquery", "./snakehead", "./tile"], function($, SnakeHead, Tile) {
             for(var i = 0; i < snake.length; i++) 
                 boardArray[snake[i].xPos][snake[i].yPos].flag = "snake";
         };
-    }
+    }*/
     
 });   
 
