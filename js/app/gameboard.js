@@ -96,8 +96,11 @@ define(["./tile"], function(Tile){
         
         //Loop through the snake array and change the corresponding tiles on the gameboard
         this.syncBoardWithSnakeArray = function(snake) {
-            for(var i = 0; i < snake.length; i++) 
-                boardArray[snake[i].xPos][snake[i].yPos].flag = "snake";
+            if(snake.length > 0){
+                for(var i = 0; i < snake.length; i++) {
+                    boardArray[snake[i].xPos][snake[i].yPos].flag = "snake";
+                }
+            }
         };
         
         //PRIVATE METHODS

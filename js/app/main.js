@@ -23,8 +23,7 @@
 /*global $:false, define:false*/
 
 
-define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead, Tile, GameBoard) {
-//    (function() {
+define(["jquery", "./snakehead", "./tile", "./gameboard", "./snake"], function($, SnakeHead, Tile, GameBoard, Snake) {
     var START_DIRECTION = "right";
     var SNAKE_START_LENGTH = 5;     //How long the snake is allowed to grow when starting the game
     var SNAKESPEED = 50;
@@ -39,8 +38,11 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
     var SMALL_BOARD_END_YPOS = 65;      //Y-coordinate where the small board should start
     var LENGTH_OF_WALLS_GONE = 150;
     
+    var SNAKE_START_XPOS = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
+    var SNAKE_START_YPOS = Math.floor(SMALL_BOARD_START_YPOS + (SMALL_BOARD_END_YPOS-SMALL_BOARD_START_YPOS)/2); //Start in the middle on the y-axis    
+    
     var gameBoard;
-    var snake = [];
+    var snake;
     var direction = START_DIRECTION;
     var snakeLengthLimit = SNAKE_START_LENGTH;
     var myInterval;
@@ -72,14 +74,11 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
         isGameOver = false;
         isGameStarted = false;
         wallsGone = false;
-        snake = [];
         
         //Reset and create a gameboard grid with tiles (no snakes yet)
-        //createGameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
         gameBoard = new GameBoard(LARGE_BOARD_SIDE, SMALL_BOARD_START_XPOS, SMALL_BOARD_START_YPOS, SMALL_BOARD_END_XPOS, SMALL_BOARD_END_YPOS);
-        
-        //Add snake head to the snake array
-        createSnake();
+
+        snake = new Snake(SNAKE_START_XPOS, SNAKE_START_YPOS);
         
         //Add apple to game board
         gameBoard.addRandomApple("apple");
@@ -91,16 +90,6 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
     function initilizeGUI() {
         drawGUI();
         displayStartGameMessage();
-    }
-    
-    function createSnake() {
-        //Sets coordinates for the snake head relative to the small board size    
-        var xPosSnakeHead = Math.floor(SMALL_BOARD_START_XPOS + (SMALL_BOARD_END_XPOS-SMALL_BOARD_START_XPOS)/4); //Start a quarter from left border
-        var yPosSnakeHead = Math.floor(SMALL_BOARD_START_YPOS + (SMALL_BOARD_END_YPOS-SMALL_BOARD_START_YPOS)/2); //Start in the middle on the y-axis    
-        
-        //Create a snake head and add to the snake array
-        var firstSnakeHead = new SnakeHead(xPosSnakeHead, yPosSnakeHead);
-        snake.push(firstSnakeHead);
     }
     
     function setKeyEvents() {
@@ -176,15 +165,12 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
         return ((direction == "up") || (direction == "down") || (prevDirection == "up") || (prevDirection == "down"));
     } 
     
-    //TILE OBJECT CONSTRUCTOR
-
-    
     function updateGameBoard() {
         //Reset current snake tiles on the board
         gameBoard.resetTiles("snake", "smallBoard");
         
         //Set the new snake tiles from the snake array
-        gameBoard.syncBoardWithSnakeArray(snake);
+        gameBoard.syncBoardWithSnakeArray(snake.getSnakeBodyArray());
     }
         
     function drawGUI() {
@@ -276,11 +262,11 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
         clearInterval(myInterval);
         
         myInterval = setInterval(function(){
-            addSnakeHead(direction);
+            snake.addHead(direction);
             
-            if(snake.length > snakeLengthLimit) 
-                removeSnakeTail();
-            
+            if(snake.getLength() > snakeLengthLimit){ 
+                snake.removeTail();
+            }
             
             checkCollision();
                         
@@ -311,36 +297,8 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
         isPaused = true;
     } 
     
-    function addSnakeHead(direction) {
-        var currentHeadXpos = snake[0].xPos;
-        var currentHeadYpos = snake[0].yPos;
-        var xPos;
-        var yPos;
-
-        switch(direction){
-            case "left":
-                xPos = currentHeadXpos - 1;
-                yPos = currentHeadYpos;
-                break;
-            case "up":
-                xPos = currentHeadXpos;
-                yPos = currentHeadYpos + 1;
-                break;
-            case "right":
-                xPos = currentHeadXpos + 1;
-                yPos = currentHeadYpos;
-                break;
-            case "down":
-                xPos = currentHeadXpos;
-                yPos = currentHeadYpos - 1;
-                break;
-        }
-
-        addHeadToArray(xPos, yPos);
-    }
-    
     function checkCollision() {
-        switch (gameBoard.checkTileFlag(snake[0].xPos, snake[0].yPos)){
+        switch (gameBoard.checkTileFlag(snake.getCurrentHead().xPos, snake.getCurrentHead().yPos)){
             case "largeBoard":
                 if(!wallsGone) 
                     gameOver();    
@@ -377,22 +335,7 @@ define(["jquery", "./snakehead", "./tile", "./gameboard"], function($, SnakeHead
                 wallsGone = true;
                 
                 break;
-                
         }   
-    }
-    
-    function removeSnakeTail() {
-        //Remove the last object from the snake array
-        snake.pop();
-    }
-
-    //Function to add a new head to the array
-    function addHeadToArray(xPos, yPos) {
-        //Create a new body part with coordinates
-        var snakeHead = new SnakeHead(xPos, yPos);
-        
-        //Adds the snake head object to the beginning of the array
-        snake.unshift(snakeHead);
     }
 });   
 
